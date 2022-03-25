@@ -1,37 +1,30 @@
 import {useState, useEffect} from "react";
+import React from "react";
+import {
+  BrowserRouter,
+  Routes,
+  Route
+} from "react-router-dom";
 import Board from "./Components/Board";
+import LoginPage from "./Components/LoginPage";
+import "normalize.css";
+import "./styles/styles.scss";
 
 var axios = require("axios");
 
 
 function App() {
-  const [state, setState] = useState([]);
-
-  // const getUsers =  ()=>{
-  //   axios.get("http://localhost:5000/api/users").then((res) => {
-  //     console.log(res);
-  //   }).catch(err => { console.log(err)})
-  // }
-
-  // const addUser = ()=>{
-  //   axios.post("http://localhost:5000/api/users", {
-  //     "Username": "dfkgj",
-  //     "UserPassword": "kkkkkkkkkkkkk",
-  //     "BestTime": "50cvb4 seconds",
-  //     "Email": "hhhsjvb@hotmail.com"
-  //   });
-  //   setTimeout(()=>getUsers(),500);
-  // }
-
-  // useEffect(()=>{
-  //   getUsers();
-  // })
-
-  console.log(state);
 
   return (
     <div className="App">
-      <Board />
+      <BrowserRouter>
+        <div>
+          <Routes>
+            <Route path="/" element={<LoginPage />} exact={true} />
+            <Route path="/game" element={<Board/>} />
+          </Routes>
+        </div>
+      </BrowserRouter>
     </div>
   );
 }
