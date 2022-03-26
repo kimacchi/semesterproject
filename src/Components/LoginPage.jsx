@@ -1,7 +1,22 @@
 import React from 'react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
+import { useDispatch } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import {motion} from "framer-motion";
+import { actionCreators } from '../actions/index';
+import { useSelector } from 'react-redux';
+import users from '../reducers/users';
+
+
+var axios = require("axios");
+
 
 const LoginPage = () => {
+    const [userState, setState] = useState({username: "", password: "", isLogged: false, allUsers: []});
+    const navigate = useNavigate();
+
+
     useEffect(()=>{
         // const COLOR_SPACE = "black";
         const COLOR_STARS = "#6F86A5";
@@ -85,22 +100,60 @@ const LoginPage = () => {
         function randomSign() {
             return Math.random() >= 0.5 ? 1 : -1;
         }
-      }, [])
+      }, []);
+
+
+    useEffect(()=>{
+        axios.get("http://localhost:5000/api/users").then((data)=>{
+            setState((prevState)=>({...prevState, allUsers: [...data.data]}))
+        })
+    }, []);
+
+    const onTextChangeUsername = (e)=>{
+        const text = e.target.value;
+        setState((prevState)=>({...prevState, username: text}));
+    }
+
+    const onTextChangePassword = (e)=>{
+        const text = e.target.value;
+        setState((prevState)=>({...prevState, password: text}));
+    }
+
+    const onFormSubmit = (e)=>{
+        e.preventDefault();
+        userState.allUsers.forEach(ele => {
+            if(ele.Username === userState.username && ele.UserPassword === userState.password){
+                setState((prevState)=>({...prevState, isLogged: !prevState.isLogged}))
+                console.log("logged in!", userState.username, userState.password);
+                navigate("/main");
+            }
+        });
+    }
 
 
   return (
     <div className='login-page' id="loginpage">
         <div className='login-wrapper' id="login-wrapper">
-            <div className='login-page__header--nonogram'>
+            <motion.div 
+                className='login-page__header--nonogram'
+                initial={{y: -190}}
+                animate={{y: 0}}
+                transition={{duration: 1}}
+            >
                 NonogramX
-            </div>
-            <div className='login-page__login-section'>
-                <form className='login-page__login-section__form'>
+            </motion.div>
+            <motion.div 
+                className='login-page__login-section'
+                initial={{opacity: 0, scale: 0.9}}
+                animate={{opacity: 1, scale: 1}}
+                transition={{duration: 1}}
+            >
+                <form onSubmit={onFormSubmit} className='login-page__login-section__form'>
                     <div className='login_form-inputs'>
                         <label style={{marginBottom:"10px", color: "white", fontFamily: "Barlow Condensed", paddingLeft: "12px"}}>USERNAME</label>
-                        <input style={{resize:"none", borderRadius: "10px", backgroundColor: "#CFE4FF"}} ></input>
+                        <input onChange={onTextChangeUsername} style={{resize:"none", borderRadius: "10px", backgroundColor: "#CFE4FF"}} ></input>
                         <label style={{marginBottom:"10px", marginTop: "20px", color: "white", fontFamily: "Barlow Condensed", paddingLeft: "12px"}}>PASSWORD</label>
-                        <input style={{resize:"none", borderRadius: "10px", backgroundColor: "#CFE4FF"}} type="password"></input>
+                        <input onChange={onTextChangePassword} style={{resize:"none", borderRadius: "10px", backgroundColor: "#CFE4FF"}} type="password"></input>
                     </div>
                     <div style={{width: "130px", height:"130px", display: "flex", alignItems: "center", justifyContent:"center"}}>
                         <button className='login-page__login-section__button'>LOGIN</button>
@@ -111,7 +164,7 @@ const LoginPage = () => {
                         <p className='forgot'>Forgot my password</p>
                         <p className='guest'>Sign in as a guest</p>
                     </div>
-            </div>
+            </motion.div>
         </div>
         <canvas id="loginpage-animation">
         </canvas>

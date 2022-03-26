@@ -40,9 +40,12 @@
     color: white;
     font-family: "Barlow Condensed", "Sans";
     font-size: 72px;
+    text-shadow: 0 0 0.15em #abe1ee;
 }
 
 .login-page__login-section{
+    opacity: 0;
+    scale: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
