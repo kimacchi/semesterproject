@@ -13,7 +13,7 @@ var axios = require("axios");
 
 
 const LoginPage = () => {
-    const [userState, setState] = useState({username: "", password: "", isLogged: false, allUsers: []});
+    const [userState, setState] = useState({username: "", password: "", isLogged: false, allUsers: [], wrong: false});
     const navigate = useNavigate();
 
 
@@ -102,6 +102,8 @@ const LoginPage = () => {
         }
       }, []);
 
+      var labelUsername = <div><p>USERNAME</p></div>
+      var labelPassword = <div><p>PASSWORD</p></div>
 
     useEffect(()=>{
         axios.get("http://localhost:5000/api/users").then((data)=>{
@@ -121,11 +123,16 @@ const LoginPage = () => {
 
     const onFormSubmit = (e)=>{
         e.preventDefault();
+        console.log(e);
         userState.allUsers.forEach(ele => {
             if(ele.Username === userState.username && ele.UserPassword === userState.password){
                 setState((prevState)=>({...prevState, isLogged: !prevState.isLogged}))
                 console.log("logged in!", userState.username, userState.password);
                 navigate("/main");
+            } else{
+                e.target[0].value = "";
+                e.target[1].value = "";
+                setState((prevState)=>({...prevState, wrong: true}));
             }
         });
     }
@@ -150,10 +157,11 @@ const LoginPage = () => {
             >
                 <form onSubmit={onFormSubmit} className='login-page__login-section__form'>
                     <div className='login_form-inputs'>
-                        <label style={{marginBottom:"10px", color: "white", fontFamily: "Barlow Condensed", paddingLeft: "12px"}}>USERNAME</label>
+                        {userState.wrong ? <span style={{position: "absolute", margin: "125px 0px 0px 12px"}}><p style={{color: "red"}}>Username or password is wrong.</p></span> : undefined}
+                        <label style={{marginBottom:"0px", color: "white", fontFamily: "Barlow Condensed", paddingLeft: "12px"}}>{labelUsername}</label>
                         <input onChange={onTextChangeUsername} style={{resize:"none", borderRadius: "10px", backgroundColor: "#CFE4FF"}} ></input>
-                        <label style={{marginBottom:"10px", marginTop: "20px", color: "white", fontFamily: "Barlow Condensed", paddingLeft: "12px"}}>PASSWORD</label>
-                        <input onChange={onTextChangePassword} style={{resize:"none", borderRadius: "10px", backgroundColor: "#CFE4FF"}} type="password"></input>
+                        <label style={{marginBottom:"0px", marginTop: "0px", color: "white", fontFamily: "Barlow Condensed", paddingLeft: "12px"}}>{labelPassword}</label>
+                        <input onChange={onTextChangePassword} style={{resize:"none", borderRadius: "10px", backgroundColor: "#CFE4FF", marginBottom: "0px"}} type="password"></input>
                     </div>
                     <div style={{width: "130px", height:"130px", display: "flex", alignItems: "center", justifyContent:"center"}}>
                         <button className='login-page__login-section__button'>LOGIN</button>
