@@ -32,11 +32,12 @@
     position: absolute;
     display: flex;
     align-items: center;
-    justify-content: center;
+    // justify-content: center;
     flex-direction: column;
 }
 
 .login-page__header--nonogram{
+    margin-top: 5vh;
     color: white;
     font-family: "Barlow Condensed", "Sans";
     font-size: 72px;
@@ -44,14 +45,15 @@
 }
 
 .login-page__login-section{
+    margin-top: 13vh;
     opacity: 0;
     scale: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 70vh;
-    height: 70vh;
+    width: 80vh;
+    height: 50vh;
 }
 
 .login-page__login-section__clicks{
@@ -89,26 +91,24 @@
     margin-right: 5vw;
 }
 
-.login_form-inputs input{
+.login_form-inputs__input{
     border: none;
     padding: 0 0 1px 6px;
-}
-
-input{
     outline: none;
     width: 280px;
     height: 18px;
     transition: 0.4s;
 }
 
-input:focus{
+.login_form-inputs__input:focus{
     outline: none;
     width: 300px;
     height: 22px;
 }
 
+
 .login-page__login-section__button{
-    margin-top: 55px;
+    // margin-top: 55px;
     width: 110px;
     height: 110px;
     border-radius: 50%;
@@ -144,3 +144,4 @@ input:focus{
     font-size: 18px;
     text-shadow: #040c2c 0px 3px 2px;
 }
+
