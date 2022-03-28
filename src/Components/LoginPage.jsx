@@ -5,8 +5,6 @@ import { useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {motion, AnimatePresence} from "framer-motion";
 import { actionCreators } from '../actions/index';
-import { useSelector } from 'react-redux';
-import users from '../reducers/users';
 
 
 var axios = require("axios");
@@ -25,12 +23,12 @@ function validateUsername(x){
 }
 
 function validatePassword(x){
-    var re = /^[a-zA-z0-9][a-zA-Z0-9\!\_\-\*\#\$]*/;
+    var re = /^[a-zA-z0-9][a-zA-Z0-9!_\-*#$]*/;
     if(x === ""){
         alert("Password must be filled out.");
         return false;
     } else if(re.test(x) === false){
-        alert("Password is not valid, passwords must start with a letter and can only contain \'\! \_ \- \* \# \$\'")
+        alert("Password is not valid, passwords must start with a letter and can only contain '! _ - * # $'")
     }
     return true;
 }
@@ -54,7 +52,7 @@ const LoginPage = () => {
     const [userState, setState] = useState({username: "", password: "", email: "", isLogged: false, allUsers: [], wrong: false, isRegistering: false});
     const navigate = useNavigate();
     const dispacth = useDispatch();
-    const {setCurrentUser, delCurrentUser} = bindActionCreators(actionCreators, dispacth);
+    const {setCurrentUser} = bindActionCreators(actionCreators, dispacth);
 
     useEffect(()=>{
         // const COLOR_SPACE = "black";
@@ -141,7 +139,7 @@ const LoginPage = () => {
         }
       }, []);
 
-      var labelUsername = <div><p>USERNAME</p></div>
+      var labelUsername = <div><p style={{color: "crimson", fontWeight:900}}>{userState.wrong ? "Username or password is incorrect." : ""}</p><p>USERNAME</p></div>
       var labelPassword = <div><p>PASSWORD</p></div>
 
     useEffect(()=>{
@@ -168,17 +166,19 @@ const LoginPage = () => {
     const onFormSubmit = (e)=>{
         e.preventDefault();
         console.log(e);
-        userState.allUsers.forEach(ele => {
-            if(ele.Username.toLowerCase() === userState.username.toLowerCase() && ele.UserPassword === userState.password){
-                setState((prevState)=>({...prevState, isLogged: !prevState.isLogged}))
-                setCurrentUser(ele.Username, ele.UserId);
-                navigate("/home");
-            } else{
-                e.target[0].value = "";
-                e.target[1].value = "";
-                setState((prevState)=>({...prevState, wrong: true}));
-            }
-        });
+        if(userState.allUsers.every((ele)=>ele.Username.toLowerCase() !== userState.username.toLowerCase() && ele.UserPassword !== userState.password)){
+            e.target[0].value = "";
+            e.target[1].value = "";
+            setState((prevState)=>({...prevState, wrong: true}));
+        }else{
+            userState.allUsers.forEach(ele => {
+                if(ele.Username.toLowerCase() === userState.username.toLowerCase() && ele.UserPassword === userState.password){
+                    setState((prevState)=>({...prevState, isLogged: !prevState.isLogged, wrong: false}))
+                    setCurrentUser(ele.Username, ele.UserId);
+                    navigate("/home");
+                }
+            });
+        }
     }
 
     const onFormSubmitRegister = (e)=>{
@@ -212,7 +212,14 @@ const LoginPage = () => {
     }
 
   return (
-    <div className='login-page' id="loginpage">
+    <motion.div 
+        className='login-page' 
+        id="loginpage"
+        initial={{opacity:0}}
+        animate={{opacity:1}}
+        exit={{opacity:0, scale: 1.8}}
+        transition={{duration: 0.4}}
+    >
         <div className='login-wrapper' id="login-wrapper">
             <motion.div 
                 className='login-page__header--nonogram'
@@ -230,7 +237,6 @@ const LoginPage = () => {
             >
                 <form onSubmit={userState.isRegistering ? onFormSubmitRegister : onFormSubmit} className='login-page__login-section__form'>
                     <div className='login_form-inputs'>
-                        {userState.wrong ? <span style={{position: "absolute", margin: "125px 0px 0px 12px"}}><p style={{color: "red"}}>Username or password is wrong.</p></span> : undefined}
                         <label style={{marginBottom:"0px", color: "white", fontFamily: "Barlow Condensed", paddingLeft: "12px"}}>{labelUsername}</label>
                         <input className='login_form-inputs__input' onChange={onTextChangeUsername} style={{resize:"none", borderRadius: "10px", backgroundColor: "#CFE4FF"}} ></input>
                         <label style={{marginBottom:"0px", marginTop: "0px", color: "white", fontFamily: "Barlow Condensed", paddingLeft: "12px"}}>{labelPassword}</label>
@@ -291,7 +297,7 @@ const LoginPage = () => {
         </div>
         <canvas id="loginpage-animation">
         </canvas>
-    </div>
+    </motion.div>
   )
 }
 

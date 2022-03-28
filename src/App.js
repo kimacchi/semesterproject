@@ -1,27 +1,36 @@
-import {useState, useEffect} from "react";
 import React from "react";
 import {
   BrowserRouter,
   Routes,
-  Route
+  Route,
+  useLocation
 } from "react-router-dom";
 import LoginPage from "./Components/LoginPage";
 import "normalize.css";
 import "./styles/styles.scss";
+import Home from "./Components/Home";
+import { AnimatePresence } from "framer-motion";
+
+
+const AnimatedRoutes = () => {
+  const location = useLocation();
+
+  return (
+    <AnimatePresence exitBeforeEnter>
+      <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<LoginPage />} />
+          <Route path="home" element={<Home/>} />
+      </Routes>
+    </AnimatePresence>
+  );
+};
 
 
 function App() {
-
   return (
-    <div className="App">
-      <BrowserRouter>
-        <div>
-          <Routes>
-            <Route path="/" element={<LoginPage />} exact={true} />
-          </Routes>
-        </div>
-      </BrowserRouter>
-    </div>
+    <BrowserRouter>
+      <AnimatedRoutes />
+    </BrowserRouter>
   );
 }
 
