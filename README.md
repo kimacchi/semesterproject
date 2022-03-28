@@ -1,17 +1,9 @@
 ## This is my project for finishing the second semester in computer engineering
 
-# NonogramX
+# Undecided Name
 
-this project is a Nonogram web application.
-Nonogram is a number puzzle game where the player needs to match the number of painted squares in each row and column.
+#### Note: This project was previously planned to be a Nonogram Web Puzzle game. However, this idea is now completely removed from the project. I will now explain what this project is about.
 
-Some of the features NonogramX has:
-- Login/Register page
-- Login without an account
-- Forgot password page (sends your account's registered email a mail to change your password)
-- a main page for displaying all the games.
-- various filterings for games
-- dynamic ratings to the game
-- creating custom games and deploying them to main stream
-- a game section where you can play various games
-- a time counter
+##### <bold>What is this project all about?</bold>
+
+This project is a combination of several tools that aims to help you manage your life better and improve your quality of life. It has some core features like managing your appointments, viewing your budget etc. It also has a project-orianted to-do feature where you can manage your projects and how to accomplish them step by step. 
