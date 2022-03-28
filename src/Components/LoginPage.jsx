@@ -53,7 +53,8 @@ function validateForm(x) {
 const LoginPage = () => {
     const [userState, setState] = useState({username: "", password: "", email: "", isLogged: false, allUsers: [], wrong: false, isRegistering: false});
     const navigate = useNavigate();
-
+    const dispacth = useDispatch();
+    const {setCurrentUser, delCurrentUser} = bindActionCreators(actionCreators, dispacth);
 
     useEffect(()=>{
         // const COLOR_SPACE = "black";
@@ -170,7 +171,7 @@ const LoginPage = () => {
         userState.allUsers.forEach(ele => {
             if(ele.Username.toLowerCase() === userState.username.toLowerCase() && ele.UserPassword === userState.password){
                 setState((prevState)=>({...prevState, isLogged: !prevState.isLogged}))
-                console.log("logged in!", userState.username, userState.password);
+                setCurrentUser(ele.Username, ele.UserId);
                 navigate("/main");
             } else{
                 e.target[0].value = "";
@@ -195,7 +196,7 @@ const LoginPage = () => {
                 console.log(response);
                 axios.get("http://localhost:5000/api/users").then((data)=>{
                     setState((prevState)=>({...prevState, allUsers: [...data.data]}))
-                    
+                    window.location.reload();
                 });
             })
         }else if(userState.allUsers.every((ele)=>ele.Username.toLowerCase() !== username.toLowerCase()) !== true){
