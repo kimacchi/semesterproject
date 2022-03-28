@@ -1,0 +1,52 @@
+.home-main-div{
+    width: 100vw;
+    height: 100vh;
+    background: rgb(108,182,214);
+    background: linear-gradient(209deg, rgba(108,182,214,1) 0%, rgba(64,86,163,1) 32%, rgba(41,69,124,1) 64%, rgba(26,21,77,1) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.home__widgets{
+    width: 96vw;
+    height: 96vh;
+    display: grid;
+    grid-template-areas:
+                        "act act exp exp exp"
+                        "act act todo todo todo"
+                        "pro pro todo todo todo"                    
+    ;
+    grid-template-columns: 0.2fr 0.3fr 0.5fr 0.5fr 0.5fr;
+    grid-template-rows: 1.5fr 0.7fr 1.8fr;
+    row-gap: 1.4vw;
+    column-gap: 1.4vw;
+}
+
+.home__activities{
+    // background-color: blue;
+    margin: 0;
+    padding: 0;
+    border-radius: 15px;
+    grid-area: act;
+}
+
+.home__expenses{
+    background-color: red;
+    grid-area: exp;
+    border-radius: 15px;
+}
+
+.home__projects{
+    background-color: white;
+    grid-area: pro;
+    border-radius: 15px;
+
+}
+
+.home__todo{
+    background-color: black;
+    grid-area: todo;
+    border-radius: 15px;
+
+}

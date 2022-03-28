@@ -1,0 +1,66 @@
+.activities-main-div{
+    margin: 0 0 0 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(11,50,55,0.5);
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.activities-main-div p{
+    margin: 0;
+    padding-top: 8px;
+    text-align: center;
+    font-family: "Barlow Condensed";
+    font-size: 32px;
+    // font-weight: 0;
+    color: white;
+}
+
+.activities__list{
+    width: 90%;
+    height: 80%;
+    border-radius: 15px;
+    background-color: rgba(12,41,41,0.3);
+    margin-bottom: 13px;
+}
+
+.activities__list-items-item p{
+    font-family: "Oxygen";
+    font-size: 16px;
+    text-align: left;
+    
+}
+
+.activities__empty-list p{
+    font-family: "Oxygen";
+    font-size: 14px;
+    text-align: center;
+    margin: 0px 2px 0 2px;
+}
+
+.activities__empty-list{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.no-activity__add-button img{
+    width: 7vh;
+    height: 7vh;
+    margin-bottom: 50px;
+    transition: 0.2s;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.no-activity__add-button img:hover{
+    width: 8vh;
+    height: 8vh;
+    box-shadow: 0 5px 5px 1px darken(rgba(12,41,41,0.3), 0.5);
+}
