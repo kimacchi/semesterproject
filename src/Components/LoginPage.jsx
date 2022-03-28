@@ -172,7 +172,7 @@ const LoginPage = () => {
             if(ele.Username.toLowerCase() === userState.username.toLowerCase() && ele.UserPassword === userState.password){
                 setState((prevState)=>({...prevState, isLogged: !prevState.isLogged}))
                 setCurrentUser(ele.Username, ele.UserId);
-                navigate("/main");
+                navigate("/home");
             } else{
                 e.target[0].value = "";
                 e.target[1].value = "";
@@ -220,7 +220,7 @@ const LoginPage = () => {
                 animate={{y: 0}}
                 transition={{duration: 1}}
             >
-                NonogramX
+                Undecided Name
             </motion.div>
             <motion.div 
                 className='login-page__login-section'
