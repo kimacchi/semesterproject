@@ -1,11 +1,37 @@
-import React from 'react'
-// import { Axios } from 'axios';
+import * as React from 'react';
 import {motion, AnimatePresence, animateVisualElement} from "framer-motion";
 import {useState, useEffect} from "react";
 import { useSelector } from 'react-redux';
 import img from "../../assets/add_button.png";
 import Modal from "react-modal";
+import Calendar from 'react-calendar';
+import TextField from '@mui/material/TextField';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import StaticTimePicker from '@mui/lab/StaticTimePicker';
+import { ThemeProvider, createTheme} from '@mui/material';
+import {makeStyles} from '@mui/styles';
 
+const darkTheme = createTheme({
+    palette: {
+        mode: "dark"
+    },
+})
+
+const theme = {
+    width: "15vw",
+    height: "20vh",
+}
+
+const useStyles = makeStyles({
+    timePicker: {
+        width: "10px",
+        height: "20px"
+    },
+    root: {
+        backgroundColor: "red",
+    }
+})
 
 const axios =require("axios");
 
@@ -25,7 +51,7 @@ Modal.defaultStyles.content = {
     border: "none",
     width: "60vw",
     height: "70vh",
-    top: "15vh",
+    top: "12vh",
     left: "20vw",
     bottom: 0,
     right: 0
@@ -36,7 +62,8 @@ console.log(Modal.defaultStyles)
 Modal.setAppElement("#root")
 
 const Activities = () => {
-    const [activityState, setState] = useState({activities: [], currentId: -10, modalIsOpen: false})
+    const classes = useStyles();
+    const [activityState, setState] = useState({activities: [], currentId: -10, modalIsOpen: false, date: new Date(), time: new Date()})
     const currentId = useSelector((state)=>state.currentUser.userId);
 
     const openModal = ()=>{
@@ -47,7 +74,7 @@ const Activities = () => {
         setState(prev => ({...prev, modalIsOpen: false}))
     } 
 
-
+    console.log(activityState.time.toString());
     useEffect(()=>{
         setState(prev=>({...prev, currentId}))
     }, [currentId])
@@ -74,7 +101,17 @@ const Activities = () => {
             isOpen={activityState.modalIsOpen}
             onRequestClose={closeModal}
         >
-
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <ThemeProvider theme={darkTheme}>
+                    <StaticTimePicker 
+                        displayStaticWrapperAs='mobile'
+                        value={activityState.time}
+                        onChange={(newVal)=>{setState((prev)=>({...prev, time: newVal}))}}
+                        renderInput={(params)=><TextField {...params}/>}
+                        className="test"
+                    />
+                </ThemeProvider>
+            </LocalizationProvider>
         </Modal>
         <p>Approaching Activities</p>
         <motion.div
