@@ -13,6 +13,10 @@ import StaticTimePicker from '@mui/lab/StaticTimePicker';
 import StaticDatePicker from '@mui/lab/StaticDatePicker';
 import { ThemeProvider, createTheme} from '@mui/material';
 import {makeStyles, styled} from '@mui/styles';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListSubheader from '@mui/material/ListSubheader';
 
 const darkTheme = createTheme({
     palette: {
@@ -237,18 +241,35 @@ const Activities = () => {
                     </div>
                 </div>
                 :
-                <div className='activities__list-items'>
-                    {/* <div className='no-activity__add-button' onClick={openModal}>
-                        <img src={img} alt="add item" style={{marginTop: 60}}></img>
-                    </div> */}
-                    {activityState.activities.map((ele)=>{
-                        return (
-                            <div key={Date.now().toString() + ele.activityId.toString()} className='activities__list-items-item'>
-                                <p style={{margin: "0 0 0px 10px"}}>{ele.activityName}<br></br>{ele.activityTime.replace("T", " ")}</p>
-                            </div>
-                        )
-                    })}
-                </div>
+                // <div className='activities__list-items'>
+                    <List
+                        sx={{
+                            width: '100%',
+                            height: "100%",
+                            maxWidth: 360,
+                            // bgcolor: 'background.paper',
+                            position: 'relative',
+                            // overflow: 'auto',
+                            maxHeight: 300,
+                            '& ul': { padding: 0 },
+                          }}
+                          
+                        //   subheader={<li />}
+                    >
+                        {activityState.activities.map((ele)=>{
+                            return (
+                            <>
+                                <ListItem style={{backgroundColor: "rgba(12,41,41,0)", color: "white"}}>
+                                    <ListItemText primary={ele.activityName} />
+                                </ListItem>
+                                <ListItem key={Date.now().toString() + ele.activityId.toString()}>
+                                    <ListItemText primary={ele.activityTime.toString()} />
+                                </ListItem>
+                            </>
+                            )
+                        })}
+                    </List>
+                // </div>
             }
         </motion.div>
     </motion.div>
@@ -256,3 +277,12 @@ const Activities = () => {
 }
 
 export default Activities
+
+
+// {activityState.activities.map((ele)=>{
+//     return (
+//         <div key={Date.now().toString() + ele.activityId.toString()} className='activities__list-items-item'>
+//             <p style={{margin: "0 0 0px 10px"}}>{ele.activityName}<br></br>{ele.activityTime.replace("T", " ")}</p>
+//         </div>
+//     )
+// })}
