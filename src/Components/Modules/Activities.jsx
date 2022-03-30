@@ -4,13 +4,15 @@ import {useState, useEffect} from "react";
 import { useSelector } from 'react-redux';
 import img from "../../assets/add_button.png";
 import Modal from "react-modal";
-import Calendar from 'react-calendar';
+// import Calendar from 'react-calendar';
+import { Button, Typography, ButtonGroup } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import StaticTimePicker from '@mui/lab/StaticTimePicker';
+import StaticDatePicker from '@mui/lab/StaticDatePicker';
 import { ThemeProvider, createTheme} from '@mui/material';
-import {makeStyles} from '@mui/styles';
+import {makeStyles, styled} from '@mui/styles';
 
 const darkTheme = createTheme({
     palette: {
@@ -18,10 +20,12 @@ const darkTheme = createTheme({
     },
 })
 
-const theme = {
-    width: "15vw",
-    height: "20vh",
-}
+const StyledTimePicker = styled(StaticTimePicker)({
+    width: "10px",
+    height: "10px",
+    maxWidth: "10px",
+    maxHeight: "10px",
+})
 
 const useStyles = makeStyles({
     timePicker: {
@@ -35,6 +39,7 @@ const useStyles = makeStyles({
 
 const axios =require("axios");
 
+console.log(StaticDatePicker);
 
 Modal.defaultStyles.overlay = {
     ...Modal.defaultStyles.overlay,
@@ -50,49 +55,112 @@ Modal.defaultStyles.content = {
     background: "linear-gradient(0deg, rgba(10,83,78,1) 0%, rgba(19,85,78,1) 32%, rgba(16,65,83,1) 64%, rgba(5,22,66,1) 100%)",
     border: "none",
     width: "60vw",
-    height: "70vh",
-    top: "12vh",
+    height: "90vh",
+    top: "2vh",
     left: "20vw",
     bottom: 0,
     right: 0
 }
 
-console.log(Modal.defaultStyles)
-
 Modal.setAppElement("#root")
 
 const Activities = () => {
-    const classes = useStyles();
-    const [activityState, setState] = useState({activities: [], currentId: -10, modalIsOpen: false, date: new Date(), time: new Date()})
+    const [activityState, setState] = useState({activities: [], currentId: -10, modalIsOpen: false, secondModalIsOpen: false, date: new Date(), time: new Date(), activityName: "", activityDescription: ""})
     const currentId = useSelector((state)=>state.currentUser.userId);
 
     const openModal = ()=>{
         setState(prev => ({...prev, modalIsOpen: true}))
     } 
 
-    const closeModal = ()=>{
-        setState(prev => ({...prev, modalIsOpen: false}))
+    const openSecondModal = ()=>{
+        if(activityState.activityName !== ""){
+            setState(prev => ({...prev, secondModalIsOpen: true}))
+        }
     } 
 
-    console.log(activityState.time.toString());
+    const closeModal = ()=>{
+        setState(prev => ({...prev, modalIsOpen: false, secondModalIsOpen: false}))
+    }
+
+    const closeSecondModal =()=>{
+        setState(prev => ({...prev, secondModalIsOpen: false}))
+    }
+
     useEffect(()=>{
         setState(prev=>({...prev, currentId}))
     }, [currentId])
-    useEffect(()=>{
+    // useEffect(()=>{
+    //     if(activityState.currentId !== undefined){
+    //         axios.get("http://localhost:5000/api/activities/" + activityState.currentId).then((data)=>{
+    //             setState((prev)=>({...prev, activities:[...data.data]}));
+    //         })
+    //     }
+    // }, []);
+    if(activityState.activities.length === 0){
         if(activityState.currentId !== undefined){
             axios.get("http://localhost:5000/api/activities/" + activityState.currentId).then((data)=>{
                 setState((prev)=>({...prev, activities:[...data.data]}));
             })
         }
-    }, [activityState.currentId]);
+    }
     useEffect(()=>{
         setState(prev=>({...prev, activities: activityState.activities.sort((a,b)=>{
             const timeA = new Date(a.activityTime).getTime();
             const timeB = new Date(b.activityTime).getTime();
-            console.log(timeA);
             return timeA > timeB ? 1 : -1;
             })}))
     }, [activityState.activities]);
+
+    const onDescriptionChange = (e)=>{
+        const text = e.target.value;
+        setState((prevState)=>({...prevState, activityDescription: text}));
+    }
+
+    const onNameChange = (e)=>{
+        const text = e.target.value;
+        setState((prevState)=>({...prevState, activityName: text}));
+    }
+
+    const addActivityData = ()=>{
+        
+        var tempMonth;
+        var tempDay;
+        var tempHour;
+        var tempMin;
+        if(activityState.date.getMonth() < 10){
+            tempMonth = `0${activityState.date.getMonth()}`
+        }else{
+            tempMonth = `${activityState.date.getMonth()}`
+        }
+        if(activityState.date.getDay() < 10){
+            tempDay = `0${activityState.date.getDay()}`
+        }else{
+            tempDay = `${activityState.date.getDay()}`
+        }
+        if(activityState.time.getHours() < 10){
+            tempHour = `0${activityState.time.getHours()}`
+        }else{
+            tempHour = `${activityState.time.getHours()}`
+        }
+        if(activityState.time.getMinutes() < 10){
+            tempMin = `0${activityState.time.getMinutes()}`
+        }else{
+            tempMin = `${activityState.time.getMinutes()}`
+        }
+        const dateTime = `${activityState.date.getFullYear()}-${tempMonth}-${tempDay}T${tempHour}:${tempMin}:00`;
+        axios.post("http://localhost:5000/api/activities/", {
+            activityName: activityState.activityName,
+            userId: activityState.currentId,
+            description: activityState.activityDescription,
+            activityTime: dateTime
+        }).then(()=>{
+            axios.get("http://localhost:5000/api/activities/" + activityState.currentId).then((data)=>{
+                setState((prev)=>({...prev, activities:[...data.data]}));
+            })
+        })
+        setState(prev=>({...prev, secondModalIsOpen: false, modalIsOpen: false, date: new Date(), time: new Date(), activityName: "", activityDescription: ""}))
+    }
+    console.log(activityState.time.getMinutes());
   return (
     <motion.div
         className='activities-main-div'
@@ -101,17 +169,60 @@ const Activities = () => {
             isOpen={activityState.modalIsOpen}
             onRequestClose={closeModal}
         >
+        <div>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <ThemeProvider theme={darkTheme}>
-                    <StaticTimePicker 
-                        displayStaticWrapperAs='mobile'
-                        value={activityState.time}
-                        onChange={(newVal)=>{setState((prev)=>({...prev, time: newVal}))}}
-                        renderInput={(params)=><TextField {...params}/>}
-                        className="test"
-                    />
+                    <div style={{display: "flex", justifyContent: "space-around"}}>
+                        <div style={{width: "40vh", height: "55vh"}}>
+                            <StyledTimePicker
+                                displayStaticWrapperAs='mobile'
+                                value={activityState.time}
+                                onChange={(newVal)=>{setState((prev)=>({...prev, time: newVal}))}}
+                                renderInput={(params)=><TextField {...params}/>}
+                                className="test"
+                            />
+                        </div>
+                        <div style={{width: "35vh", height: "50vh", color: "white"}}>
+                            <StaticDatePicker
+                                openTo="day"
+                                value={activityState.date}
+                                onChange={(newValue) => {
+                                setState(prev => ({...prev, date: newValue}));
+                                }}
+                                renderInput={(params) => <TextField {...params} />}
+                            />
+                        </div>
+                    </div>
                 </ThemeProvider>
             </LocalizationProvider>
+            <div style={{display: "flex", flexDirection:"column", width: "15vw", height: "30vh", justifyContent: "space-around"}}>
+                <TextField
+                    id="standard-textarea"
+                    label="Project Name *"
+                    placeholder="Please enter a name..."
+                    // multiline
+                    variant="standard"
+                    onChange={onNameChange}
+                />
+                <TextField
+                    style={{width: "30vw"}}
+                    id="standard-textarea"
+                    label="Project Description"
+                    placeholder=""
+                    multiline
+                    variant="standard"
+                    onChange={onDescriptionChange}
+                />
+                <Button style={{width: "9vw"}} variant="contained" onClick={openSecondModal}>Add Activity</Button>
+                <Modal isOpen={activityState.secondModalIsOpen} className="test-modal" onRequestClose={closeSecondModal}>
+                    <Typography variant='h6' style={{color: "white", textAlign: "center", marginTop: "10px"}}>Add this activity?</Typography>
+                    <ButtonGroup color="secondary" aria-label="medium secondary button group" style={{marginBottom: "20px"}}>
+                        <Button onClick={addActivityData}>Add</Button>
+                        <Button onClick={closeSecondModal}>Cancel</Button>
+                    </ButtonGroup>
+                </Modal>
+            </div>
+        </div>
         </Modal>
         <p>Approaching Activities</p>
         <motion.div

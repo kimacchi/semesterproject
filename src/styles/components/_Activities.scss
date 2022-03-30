@@ -94,3 +94,25 @@
     height: 8vh;
     box-shadow: 0 5px 5px 1px darken(rgba(12,41,41,0.3), 0.5);
 }
+
+// .css-nf6uuc-MuiPickerStaticWrapper-root{
+//     width: 40vh;
+//     height: 40vh;
+// }
+
+.css-j7qwjs{
+    color: white;
+}
+
+.test-modal{
+    background-color: rgba(7, 32, 66, 0.95);
+    width: 20vw;
+    height: 20vh;
+    border: none;
+    border-radius: 35px;
+    outline: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
