@@ -128,14 +128,14 @@ const Activities = () => {
         var tempHour;
         var tempMin;
         if(activityState.date.getMonth() < 10){
-            tempMonth = `0${activityState.date.getMonth()}`
+            tempMonth = `0${(activityState.date.getMonth()+ 1)}`
         }else{
-            tempMonth = `${activityState.date.getMonth()}`
+            tempMonth = `${activityState.date.getMonth() + 1}`
         }
-        if(activityState.date.getDay() < 10){
-            tempDay = `0${activityState.date.getDay()}`
+        if(activityState.date.getDate() < 10){
+            tempDay = `0${activityState.date.getDate()}`
         }else{
-            tempDay = `${activityState.date.getDay()}`
+            tempDay = `${activityState.date.getDate()}`
         }
         if(activityState.time.getHours() < 10){
             tempHour = `0${activityState.time.getHours()}`
@@ -148,6 +148,7 @@ const Activities = () => {
             tempMin = `${activityState.time.getMinutes()}`
         }
         const dateTime = `${activityState.date.getFullYear()}-${tempMonth}-${tempDay}T${tempHour}:${tempMin}:00`;
+        console.log(dateTime);
         axios.post("http://localhost:5000/api/activities/", {
             activityName: activityState.activityName,
             userId: activityState.currentId,
@@ -160,7 +161,7 @@ const Activities = () => {
         })
         setState(prev=>({...prev, secondModalIsOpen: false, modalIsOpen: false, date: new Date(), time: new Date(), activityName: "", activityDescription: ""}))
     }
-    console.log(activityState.time.getMinutes());
+    console.log(activityState.date.getDate());
   return (
     <motion.div
         className='activities-main-div'
@@ -237,16 +238,16 @@ const Activities = () => {
                 </div>
                 :
                 <div className='activities__list-items'>
+                    {/* <div className='no-activity__add-button' onClick={openModal}>
+                        <img src={img} alt="add item" style={{marginTop: 60}}></img>
+                    </div> */}
                     {activityState.activities.map((ele)=>{
                         return (
                             <div key={Date.now().toString() + ele.activityId.toString()} className='activities__list-items-item'>
-                                <p style={{margin: "0 0 10px 10px"}}>{ele.activityName}<br></br>{ele.activityTime.replace("T", " ")}</p>
+                                <p style={{margin: "0 0 0px 10px"}}>{ele.activityName}<br></br>{ele.activityTime.replace("T", " ")}</p>
                             </div>
                         )
                     })}
-                    <div className='no-activity__add-button' onClick={openModal}>
-                        <img src={img} alt="add item" style={{marginTop: 60}}></img>
-                    </div>
                 </div>
             }
         </motion.div>
