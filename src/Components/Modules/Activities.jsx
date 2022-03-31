@@ -16,7 +16,7 @@ import {makeStyles, styled} from '@mui/styles';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-import ListSubheader from '@mui/material/ListSubheader';
+import { remainingDate } from '../../functions/remaining-date';
 
 const darkTheme = createTheme({
     palette: {
@@ -259,15 +259,28 @@ const Activities = () => {
                         {activityState.activities.map((ele)=>{
                             return (
                             <>
-                                <ListItem style={{backgroundColor: "rgba(12,41,41,0)", color: "white"}}>
-                                    <ListItemText primary={ele.activityName} />
-                                </ListItem>
-                                <ListItem key={Date.now().toString() + ele.activityId.toString()}>
-                                    <ListItemText primary={ele.activityTime.toString()} />
-                                </ListItem>
+                                {
+                                    (new Date(ele.activityTime).getTime() - new Date().getTime() <= 604800000 &&  new Date(ele.activityTime).getTime() - new Date().getTime() > 0) ?
+                                    <>
+                                        <ListItem style={{backgroundColor: "rgba(12,41,41,0)", color: "white"}}>
+                                            <ListItemText primary={ele.activityName} />
+                                        </ListItem>
+                                        <ListItem key={Date.now().toString() + ele.activityId.toString()}>
+                                            <ListItemText primary={remainingDate(new Date(ele.activityTime).getTime() - new Date().getTime())} />
+                                        </ListItem>
+                                    </>
+                                    :
+                                    undefined
+                                }
+                                
                             </>
                             )
                         })}
+                        <div className='no-activity__add-button' onClick={openModal}
+                            style={{margin: "3vh 0 0 40%"}}
+                        >
+                            <img src={img} alt="add item"></img>
+                        </div>
                     </List>
                 // </div>
             }
