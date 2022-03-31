@@ -17,33 +17,16 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import { remainingDate } from '../../functions/remaining-date';
+import DeleteIcon from '@mui/icons-material/Delete';
+
+const axios =require("axios");
+
 
 const darkTheme = createTheme({
     palette: {
         mode: "dark"
     },
 })
-
-const StyledTimePicker = styled(StaticTimePicker)({
-    width: "10px",
-    height: "10px",
-    maxWidth: "10px",
-    maxHeight: "10px",
-})
-
-const useStyles = makeStyles({
-    timePicker: {
-        width: "10px",
-        height: "20px"
-    },
-    root: {
-        backgroundColor: "red",
-    }
-})
-
-const axios =require("axios");
-
-console.log(StaticDatePicker);
 
 Modal.defaultStyles.overlay = {
     ...Modal.defaultStyles.overlay,
@@ -69,8 +52,12 @@ Modal.defaultStyles.content = {
 Modal.setAppElement("#root")
 
 const Activities = () => {
-    const [activityState, setState] = useState({activities: [], currentId: -10, modalIsOpen: false, secondModalIsOpen: false, date: new Date(), time: new Date(), activityName: "", activityDescription: ""})
+    const [activityState, setState] = useState({activities: [], currentId: -10, modalIsOpen: false, secondModalIsOpen: false, date: new Date(), time: new Date(), activityName: "", activityDescription: "", thirdModalIsOpen: false, currentActivity: {}})
     const currentId = useSelector((state)=>state.currentUser.userId);
+
+    const setCurrentActivity = (activity)=>{
+        setState(prev=>({...prev, currentActivity: activity}));
+    }
 
     const openModal = ()=>{
         setState(prev => ({...prev, modalIsOpen: true}))
@@ -82,12 +69,21 @@ const Activities = () => {
         }
     } 
 
+    const openThirdModal = (activity)=>{
+        setState(prev => ({...prev, thirdModalIsOpen: true}))
+        setState(prev=>({...prev, currentActivity: activity}));
+    } 
+
     const closeModal = ()=>{
-        setState(prev => ({...prev, modalIsOpen: false, secondModalIsOpen: false}))
+        setState(prev => ({...prev, modalIsOpen: false, secondModalIsOpen: false, thirdModalIsOpen: false, currentActivity: {}}))
     }
 
     const closeSecondModal =()=>{
         setState(prev => ({...prev, secondModalIsOpen: false}))
+    }
+
+    const closeThirdModal =()=>{
+        setState(prev => ({...prev, thirdModalIsOpen: false, currentActivity: {}}))
     }
 
     useEffect(()=>{
@@ -165,7 +161,7 @@ const Activities = () => {
         })
         setState(prev=>({...prev, secondModalIsOpen: false, modalIsOpen: false, date: new Date(), time: new Date(), activityName: "", activityDescription: ""}))
     }
-    console.log(activityState.date.getDate());
+    // console.log(activityState.date.getDate());
   return (
     <motion.div
         className='activities-main-div'
@@ -179,7 +175,7 @@ const Activities = () => {
                 <ThemeProvider theme={darkTheme}>
                     <div style={{display: "flex", justifyContent: "space-around"}}>
                         <div style={{width: "40vh", height: "55vh"}}>
-                            <StyledTimePicker
+                            <StaticTimePicker
                                 displayStaticWrapperAs='mobile'
                                 value={activityState.time}
                                 onChange={(newVal)=>{setState((prev)=>({...prev, time: newVal}))}}
@@ -219,7 +215,7 @@ const Activities = () => {
                     onChange={onDescriptionChange}
                 />
                 <Button style={{width: "9vw"}} variant="contained" onClick={openSecondModal}>Add Activity</Button>
-                <Modal isOpen={activityState.secondModalIsOpen} className="test-modal" onRequestClose={closeSecondModal}>
+                <Modal isOpen={activityState.secondModalIsOpen} className="secondary-activity-modal" onRequestClose={closeSecondModal}>
                     <Typography variant='h6' style={{color: "white", textAlign: "center", marginTop: "10px"}}>Add this activity?</Typography>
                     <ButtonGroup color="secondary" aria-label="medium secondary button group" style={{marginBottom: "20px"}}>
                         <Button onClick={addActivityData}>Add</Button>
@@ -228,6 +224,23 @@ const Activities = () => {
                 </Modal>
             </div>
         </div>
+        </Modal>
+
+        <Modal
+            isOpen={activityState.thirdModalIsOpen}
+            onRequestClose={closeModal}
+            className="third-activity-modal"
+        >
+            <div>
+                <div style={{color: "white"}}>
+                    <p>Activity Name: {activityState.currentActivity.activityName}</p>
+                    <p>Description: {activityState.currentActivity.description}</p>
+                    <p>Activity Time: {`${activityState.currentActivity.activityTime}`}</p>
+                </div>
+                <ButtonGroup color="secondary" aria-label="medium secondary button group">
+                    <Button>Delete</Button>
+                </ButtonGroup>
+            </div>
         </Modal>
         <p>Approaching Activities</p>
         <motion.div
@@ -258,14 +271,14 @@ const Activities = () => {
                     >
                         {activityState.activities.map((ele)=>{
                             return (
-                            <>
+                            <div key={Date.now().toString() + ele.activityId.toString()}>
                                 {
                                     (new Date(ele.activityTime).getTime() - new Date().getTime() <= 604800000 &&  new Date(ele.activityTime).getTime() - new Date().getTime() > 0) ?
                                     <>
-                                        <ListItem style={{backgroundColor: "rgba(12,41,41,0)", color: "white"}}>
+                                        <ListItem style={{backgroundColor: "rgba(12,41,41,0.7)", color: "white", cursor: "pointer"}} onClick={()=>openThirdModal(ele)}>
                                             <ListItemText primary={ele.activityName} />
                                         </ListItem>
-                                        <ListItem key={Date.now().toString() + ele.activityId.toString()}>
+                                        <ListItem onClick={()=>openThirdModal(ele)} style={{backgroundColor: "rgba(12,41,41,0.5)", color: "white", marginBottom: "3vh", cursor: "pointer"}}>
                                             <ListItemText primary={remainingDate(new Date(ele.activityTime).getTime() - new Date().getTime())} />
                                         </ListItem>
                                     </>
@@ -273,11 +286,11 @@ const Activities = () => {
                                     undefined
                                 }
                                 
-                            </>
+                            </div>
                             )
                         })}
                         <div className='no-activity__add-button' onClick={openModal}
-                            style={{margin: "3vh 0 0 40%"}}
+                            style={{margin: "3vh 0 0 43%"}}
                         >
                             <img src={img} alt="add item"></img>
                         </div>

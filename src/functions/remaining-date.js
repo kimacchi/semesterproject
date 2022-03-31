@@ -2,7 +2,6 @@
 
 export const remainingDate = (milsec)=>{
     var seconds = milsec / 1000;
-    console.log(seconds)
     if (seconds < 3600){
         var mins = Math.floor(seconds/60);
         return `${mins} minute${mins > 1 ? "s" : ""}`;

@@ -109,10 +109,23 @@
     color: white;
 }
 
-.test-modal{
+.secondary-activity-modal{
     background-color: rgba(7, 32, 66, 0.95);
     width: 20vw;
     height: 20vh;
+    border: none;
+    border-radius: 35px;
+    outline: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.third-activity-modal{
+    background-color: rgba(27, 82, 103, 0.551);
+    width: 40vw;
+    height: 40vh;
     border: none;
     border-radius: 35px;
     outline: none;
