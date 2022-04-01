@@ -12,7 +12,7 @@ This project is a combination of several tools that aims to help you manage your
 Progress:
  - [x] REST API for the project
  - [x] Login/register page
- - [x] Activity list (still a prototype and just the list)
+ - [x] Activity list
  - [x] Page to organize activities
  - [ ] To do widget
  - [ ] Analytics widget
