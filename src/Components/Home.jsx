@@ -35,12 +35,40 @@ const Home = () => {
         className="home-main-div"
     >
         <div className='home__widgets'>
-            <div className='home__activities'>
+            <motion.div 
+                className='home__activities'
+                initial={{opacity: 0, scale: 0.7}}
+                animate={{opacity: 1, scale: 1}}
+                transition={{duration: 0.8}}
+            >
                 <Activities />
-            </div>
-            <div className='home__expenses'></div>
-            <div className='home__projects'></div>
-            <div className='home__todo'></div>
+            </motion.div>
+
+            <motion.div 
+                className='home__expenses'
+                initial={{opacity: 0, scale: 0.8}}
+                animate={{opacity: [0, 0, 1, 1], scale: [0.8, 0.8, 1, 1]}}
+                transition={{duration: 1.4, times: [0, 0.3, 0.8, 1]}}
+            >
+            </motion.div>
+
+            <motion.div 
+                className='home__projects'
+                initial={{opacity: 0, scale: 0.6}}
+                animate={{opacity: [0, 0, 0.8, 1], scale: [0.6, 0.6, 1, 1]}}
+                transition={{duration: 2, times: [0, 0.1, 0.5, 1]}}
+            >
+
+            </motion.div>
+
+            <motion.div 
+                className='home__todo'
+                initial={{opacity: 0, scale: 0.8}}
+                animate={{opacity: [0, 0, 0, 0.8, 1], scale: [0.8, 0.8, 0.8, 1, 1]}}
+                transition={{duration: 2.4, times: [0, 0.1, 0.2, 0.6, 1]}}
+            >
+
+            </motion.div>
         </div>
     </motion.div>
   )
