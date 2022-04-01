@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../actions/index';
 import Activities from './Modules/Activities';
+import Projects from "./Modules/Projects";
 
 
 const Home = () => {
@@ -58,7 +59,7 @@ const Home = () => {
                 animate={{opacity: [0, 0, 0.8, 1], scale: [0.6, 0.6, 1, 1]}}
                 transition={{duration: 2, times: [0, 0.1, 0.5, 1]}}
             >
-
+                <Projects />
             </motion.div>
 
             <motion.div 

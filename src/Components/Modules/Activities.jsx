@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {motion, AnimatePresence, animateVisualElement} from "framer-motion";
+import {motion} from "framer-motion";
 import {useState, useEffect} from "react";
 import { useSelector } from 'react-redux';
 import img from "../../assets/add_button.png";
@@ -12,7 +12,6 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import StaticTimePicker from '@mui/lab/StaticTimePicker';
 import StaticDatePicker from '@mui/lab/StaticDatePicker';
 import { ThemeProvider, createTheme} from '@mui/material';
-import {makeStyles, styled} from '@mui/styles';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -51,7 +50,7 @@ Modal.defaultStyles.content = {
 Modal.setAppElement("#root")
 
 const Activities = () => {
-    const [activityState, setState] = useState({activities: [], currentId: -10, modalIsOpen: false, secondModalIsOpen: false, date: new Date(), time: new Date(), activityName: "", activityDescription: "", thirdModalIsOpen: false, currentActivity: {}})
+    const [activityState, setState] = useState({activities: [], currentId: undefined, modalIsOpen: false, secondModalIsOpen: false, date: new Date(), time: new Date(), activityName: "", activityDescription: "", thirdModalIsOpen: false, currentActivity: {}})
     const currentId = useSelector((state)=>state.currentUser.userId);
 
     const setCurrentActivity = (activity)=>{
@@ -266,7 +265,7 @@ const Activities = () => {
                     <List
                         sx={{
                             width: '100%',
-                            height: "100%",
+                            height: "90%",
                             maxWidth: 360,
                             // bgcolor: 'background.paper',
                             position: 'relative',
