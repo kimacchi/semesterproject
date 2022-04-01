@@ -123,9 +123,9 @@
 }
 
 .third-activity-modal{
-    background-color: rgba(27, 82, 103, 0.551);
-    width: 40vw;
-    height: 40vh;
+    background-color: rgba(27, 82, 103, 0.7);
+    width: 30vw;
+    height: 35vh;
     border: none;
     border-radius: 35px;
     outline: none;
@@ -133,4 +133,11 @@
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+}
+
+.activity-modal-info{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    // justify-content: space-around;
 }

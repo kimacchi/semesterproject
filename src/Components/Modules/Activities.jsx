@@ -17,7 +17,6 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import { remainingDate } from '../../functions/remaining-date';
-import DeleteIcon from '@mui/icons-material/Delete';
 
 const axios =require("axios");
 
@@ -161,7 +160,16 @@ const Activities = () => {
         })
         setState(prev=>({...prev, secondModalIsOpen: false, modalIsOpen: false, date: new Date(), time: new Date(), activityName: "", activityDescription: ""}))
     }
-    // console.log(activityState.date.getDate());
+
+    const deleteActivity = ()=>{
+        axios.delete("http://localhost:5000/api/activities/" + activityState.currentActivity.activityId).then(()=>{
+            axios.get("http://localhost:5000/api/activities/" + activityState.currentId).then((data)=>{
+                setState((prev)=>({...prev, activities:[...data.data]}));
+            })
+        })
+        closeModal();
+    }
+
   return (
     <motion.div
         className='activities-main-div'
@@ -231,14 +239,15 @@ const Activities = () => {
             onRequestClose={closeModal}
             className="third-activity-modal"
         >
-            <div>
+            <div className='activity-modal-info'>
                 <div style={{color: "white"}}>
                     <p>Activity Name: {activityState.currentActivity.activityName}</p>
                     <p>Description: {activityState.currentActivity.description}</p>
                     <p>Activity Time: {`${activityState.currentActivity.activityTime}`}</p>
                 </div>
                 <ButtonGroup color="secondary" aria-label="medium secondary button group">
-                    <Button>Delete</Button>
+                    <Button onClick={deleteActivity}>Delete</Button>
+                    <Button onClick={closeModal}>Cancel</Button>
                 </ButtonGroup>
             </div>
         </Modal>
@@ -254,7 +263,6 @@ const Activities = () => {
                     </div>
                 </div>
                 :
-                // <div className='activities__list-items'>
                     <List
                         sx={{
                             width: '100%',
@@ -266,8 +274,6 @@ const Activities = () => {
                             maxHeight: 300,
                             '& ul': { padding: 0 },
                           }}
-                          
-                        //   subheader={<li />}
                     >
                         {activityState.activities.map((ele)=>{
                             return (
@@ -295,7 +301,6 @@ const Activities = () => {
                             <img src={img} alt="add item"></img>
                         </div>
                     </List>
-                // </div>
             }
         </motion.div>
     </motion.div>
@@ -303,12 +308,3 @@ const Activities = () => {
 }
 
 export default Activities
-
-
-// {activityState.activities.map((ele)=>{
-//     return (
-//         <div key={Date.now().toString() + ele.activityId.toString()} className='activities__list-items-item'>
-//             <p style={{margin: "0 0 0px 10px"}}>{ele.activityName}<br></br>{ele.activityTime.replace("T", " ")}</p>
-//         </div>
-//     )
-// })}
