@@ -4,16 +4,19 @@ import { useSelector } from 'react-redux';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-import { ListItemButton, Button } from '@mui/material';
+import { ListItemButton, Button, TextField } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../actions/index';
 import img from "../../assets/add_button.png";
+import Modal from "react-modal";
 
 const axios = require("axios");
 
+Modal.setAppElement("#root")
+
 const Projects = () => {
-    const [projectState, setState] = useState({projects: [], currentUserId: undefined, currentProjectId: undefined, mouseEnter: {state: false, id: undefined}});
+    const [projectState, setState] = useState({projects: [], currentUserId: undefined, currentProjectId: undefined, mouseEnter: {state: false, id: undefined}, projectName: "", modalIsOpen: false});
     const currentUserId = useSelector((state)=>state.currentUser.userId);
     const currentProject = useSelector((state)=>state.currentProject);
     const dispatch = useDispatch();
@@ -52,9 +55,41 @@ const Projects = () => {
             })
         })
     }
+
+    const openModal = ()=>{
+        setState(prev=>({...prev, modalIsOpen: true}))
+    }
+
+    const closeModal = ()=>{
+        setState(prev=>({...prev, modalIsOpen: false}))
+    }
+
+    const onTextChange = (e)=>{
+        const text = e.target.value;
+        setState(prev=>({...prev, projectName: text}));
+    }
+
+    const addProject = ()=>{
+        if(projectState.projectName !== ""){
+            axios.post("http://localhost:5000/api/projects/", {projectName: projectState.projectName, userId: projectState.currentUserId}).then(()=>{
+                axios.get("http://localhost:5000/api/projects/" + projectState.currentUserId).then((data)=>{
+                    setState((prev)=>({...prev, projects:[...data.data], projectName: "", modalIsOpen: false}));
+                })
+            })
+        }
+    }
+
   return (
     <div className='projects-list'>
         <p>Projects</p>
+        <Modal
+            className="projects-modal"
+            isOpen={projectState.modalIsOpen}
+            onRequestClose={closeModal}
+        >
+            <TextField id="standard-basic" label="Project Name *" variant="standard" style={{marginTop: "1vh"}} onChange={onTextChange} />
+            <Button variant="contained" onClick={addProject}>Add</Button>
+        </Modal>
         {
             projectState.projects.length === 0 ? 
 
@@ -62,6 +97,7 @@ const Projects = () => {
                 <p>You have no projects, add some!</p>
                 <div className='no-activity__add-button'
                     style={{margin: "3vh 0 0 40%"}}
+                    onClick={openModal}
                 >
                     <img src={img} alt="add item"></img>
                 </div>
@@ -70,6 +106,7 @@ const Projects = () => {
             :
 
             <div className='projects-list__items'>
+                
                 <List
                         sx={{
                             width: '100%',
@@ -109,8 +146,9 @@ const Projects = () => {
                         })
                     }
                     <div className='no-activity__add-button'
-                            style={{margin: "3vh 0 0 40%"}}
-                        >
+                        style={{margin: "3vh 0 0 40%"}}
+                        onClick={openModal}
+                    >
                             <img src={img} alt="add item"></img>
                     </div>
                 </List>
