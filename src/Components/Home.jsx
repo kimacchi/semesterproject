@@ -8,6 +8,7 @@ import { bindActionCreators } from 'redux';
 import { actionCreators } from '../actions/index';
 import Activities from './Modules/Activities';
 import Projects from "./Modules/Projects";
+import Todo from './Modules/Todo';
 
 
 const Home = () => {
@@ -68,7 +69,7 @@ const Home = () => {
                 animate={{opacity: [0, 0, 0, 0.8, 1], scale: [0.8, 0.8, 0.8, 1, 1]}}
                 transition={{duration: 2.4, times: [0, 0.1, 0.2, 0.6, 1]}}
             >
-
+                <Todo />
             </motion.div>
         </div>
     </motion.div>
