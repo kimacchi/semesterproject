@@ -45,7 +45,9 @@ const Projects = () => {
 
     const setCurrentProjectLocal = (projectId)=>{
         setState(prev=>({...prev, currentProjectId: projectId}));
-        setCurrentProject(projectState.currentProjectId);
+        
+        setCurrentProject(projectId);
+        
     }
 
     const delProject = (id)=>{

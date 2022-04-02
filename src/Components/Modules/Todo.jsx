@@ -1,12 +1,18 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import {v4 as uuid} from "uuid";
+import { useSelector } from 'react-redux';
+
+// the portion should be as follows:
+// [items seperated by comma];[items seperated by comma];[items seperated by comma]
+// if one column is empty, simply leave it alone.
+
+
+const axios = require("axios");
+
 
 // fake data
 
-
-
-//---
 const itemsFromBackend = [
     { id: uuid(), content: "First task" },
     { id: uuid(), content: "Second task" },
@@ -16,19 +22,21 @@ const itemsFromBackend = [
   ];
   
   const columnsFromBackend = {
-    [uuid()]: {
+    todo: {
       name: "To do",
       items: itemsFromBackend
     },
-    [uuid()]: {
+    progress: {
       name: "In Progress",
       items: []
     },
-    [uuid()]: {
+    done: {
       name: "Done",
       items: []
     }
   };
+
+//---
   
   const onDragEnd = (result, columns, setColumns) => {
     if (!result.destination) return;
@@ -71,6 +79,23 @@ const itemsFromBackend = [
 
 const Todo = () => {
     const [columns, setColumns] = useState(columnsFromBackend);
+    const [todoState, setState] = useState({currentProject: undefined, currentUser: undefined});
+    const currentProjectGlobal = useSelector((state)=>state.currentProject.projectId);
+    const currentUserGlobal = useSelector((state)=>state.currentUser.userId);
+    // console.log(currentUserGlobal, currentProjectGlobal);
+
+    useEffect(()=>{
+        setState(prev => ({...prev, currentProject: currentProjectGlobal}))
+    }, [currentProjectGlobal]);
+
+    if(todoState.currentUser === undefined && currentUserGlobal !== undefined){
+        setState(prev => ({...prev, currentUser: currentUserGlobal}))
+    }
+
+    useEffect(()=>{
+        axios.get("http://localhost:5000/api/todo/").then((data)=>console.log(data.data))
+    }, [currentProjectGlobal]);
+    console.log("a");
     return (
       <div style={{ display: "flex", justifyContent: "center", height: "100%", backgroundColor: "rgba(11,50,55,0.5)", borderRadius: "15px" }}>
         <DragDropContext
@@ -88,7 +113,6 @@ const Todo = () => {
                 }}
                 key={columnId}
               >
-                {/* <p>{column.name}</p> */}
                 <div style={{ margin: 0 }}>
                   <Droppable droppableId={columnId} key={columnId}>
                     {(provided, snapshot) => {
@@ -97,7 +121,7 @@ const Todo = () => {
                             {...provided.droppableProps}
                             ref={provided.innerRef}
                             style={{
-                                background: snapshot.isDraggingOver
+                                backgroundColor: snapshot.isDraggingOver
                                 ? "rgba(12,41,41,0.5)"
                                 : "rgba(12,41,41,0.3)",
                                 padding: 8,
@@ -107,7 +131,6 @@ const Todo = () => {
                                 maxHeight: "54vh",
                                 overflowY: "auto",
                                 overflowX: "hidden",
-                                backgroundColor: "rgba(12,41,41,0.3)",
                             }}
                             >
                                 <p
