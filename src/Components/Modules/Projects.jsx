@@ -72,8 +72,9 @@ const Projects = () => {
     const addProject = ()=>{
         if(projectState.projectName !== ""){
             axios.post("http://localhost:5000/api/projects/", {projectName: projectState.projectName, userId: projectState.currentUserId}).then(()=>{
+                setState((prev)=>({...prev, projectName: "", modalIsOpen: false}));
                 axios.get("http://localhost:5000/api/projects/" + projectState.currentUserId).then((data)=>{
-                    setState((prev)=>({...prev, projects:[...data.data], projectName: "", modalIsOpen: false}));
+                    setState((prev)=>({...prev, projects:[...data.data]}));
                 })
             })
         }
@@ -96,7 +97,7 @@ const Projects = () => {
             <div className='projects-list-no-projects'>
                 <p>You have no projects, add some!</p>
                 <div className='no-activity__add-button'
-                    style={{margin: "3vh 0 0 40%"}}
+                    style={{margin: "3vh 0 0 0%"}}
                     onClick={openModal}
                 >
                     <img src={img} alt="add item"></img>
@@ -109,8 +110,8 @@ const Projects = () => {
                 
                 <List
                         sx={{
-                            width: '100%',
-                            height: "100%",
+                            width: '99%',
+                            height: "92.4%",
                             maxWidth: 360,
                             // bgcolor: 'background.paper',
                             position: 'relative',
@@ -146,7 +147,7 @@ const Projects = () => {
                         })
                     }
                     <div className='no-activity__add-button'
-                        style={{margin: "3vh 0 0 40%"}}
+                        style={{margin: "3vh 0 0 43%"}}
                         onClick={openModal}
                     >
                             <img src={img} alt="add item"></img>
