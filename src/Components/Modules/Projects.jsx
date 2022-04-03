@@ -44,14 +44,20 @@ const Projects = () => {
     }
 
     const setCurrentProjectLocal = (projectId)=>{
+        setTimeout(()=>{
+            axios.get("http://localhost:5000/api/todo/" + projectId).then((data)=>{
+                if(data.data.length === 0){
+                    axios.post("http://localhost:5000/api/todo/", {userId: projectState.currentUserId, list: "", projectId: projectId})
+                }
+            });
+        }, 500);
         setState(prev=>({...prev, currentProjectId: projectId}));
-        
         setCurrentProject(projectId);
-        
     }
 
     const delProject = (id)=>{
         axios.delete("http://localhost:5000/api/projects/" + id).then(()=>{
+            axios.delete("http://localhost:5000/api/todo/" + id);
             axios.get("http://localhost:5000/api/projects/" + projectState.currentUserId).then((data)=>{
                 setState((prev)=>({...prev, projects:[...data.data], currentProjectId: undefined}));
             })
@@ -77,8 +83,10 @@ const Projects = () => {
                 setState((prev)=>({...prev, projectName: "", modalIsOpen: false}));
                 axios.get("http://localhost:5000/api/projects/" + projectState.currentUserId).then((data)=>{
                     setState((prev)=>({...prev, projects:[...data.data]}));
+                    
                 })
             })
+            
         }
     }
 
