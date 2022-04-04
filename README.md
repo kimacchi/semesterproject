@@ -23,7 +23,7 @@ Progress:
 
 
 Known problems:
- - Major:
+ Major:
   * When there is more than one project linked to a user's account, switching from project 'a' to 'b' will copy project 'a''s To do widget data to project 'b', resulting in a situation of complete loss of project 'b''s data. The widget is unusable with more than one project.
- - Minor:
+ Minor:
   * There are some performance issues with the whole app, but they are more appearent when using To do widget.  
