@@ -44,13 +44,12 @@ const Projects = () => {
     }
 
     const setCurrentProjectLocal = (projectId)=>{
-        setTimeout(()=>{
-            axios.get("http://localhost:5000/api/todo/" + projectId).then((data)=>{
-                if(data.data.length === 0){
-                    axios.post("http://localhost:5000/api/todo/", {userId: projectState.currentUserId, list: "", projectId: projectId})
-                }
-            });
-        }, 500);
+        axios.get("http://localhost:5000/api/todo/" + projectId).then((data)=>{
+            if(data.data.length === 0){
+                console.log(data);
+                axios.post("http://localhost:5000/api/todo/", {userId: projectState.currentUserId, list: "", projectId: projectId})
+            }
+        });
         setState(prev=>({...prev, currentProjectId: projectId}));
         setCurrentProject(projectId);
     }
@@ -139,7 +138,7 @@ const Projects = () => {
                                         {marginLeft: 10, color: "white"} 
                                         : 
                                         {cursor: "pointer"}}
-                                    onClick={()=>setCurrentProjectLocal(ele.projectId)}
+                                    // onClick={()=>setCurrentProjectLocal(ele.projectId)}
                                 >
                                     <ListItem onClick={()=>setCurrentProjectLocal(ele.projectId)} onMouseEnter={()=>setOnMouseEnter(ele.projectId)} onMouseLeave={()=>setOnMouseLeave()}>
                                         <ListItemText primary={ele.projectName}/>
