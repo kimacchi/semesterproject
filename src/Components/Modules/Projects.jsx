@@ -10,6 +10,7 @@ import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../actions/index';
 import img from "../../assets/add_button.png";
 import Modal from "react-modal";
+import {v4 as uuid} from "uuid";
 
 const axios = require("axios");
 
@@ -47,7 +48,7 @@ const Projects = () => {
         axios.get("http://localhost:5000/api/todo/" + projectId).then((data)=>{
             if(data.data.length === 0){
                 console.log(data);
-                axios.post("http://localhost:5000/api/todo/", {userId: projectState.currentUserId, list: "", projectId: projectId})
+                axios.post("http://localhost:5000/api/todo/", {userId: projectState.currentUserId, list: ";;", projectId: projectId})
             }
         });
         setState(prev=>({...prev, currentProjectId: projectId}));
@@ -133,7 +134,7 @@ const Projects = () => {
                         projectState.projects.map((ele)=>{
                             return(
                                 <div 
-                                    key={ele.projectId + new Date().getTime()} 
+                                    key={uuid()} 
                                     style={ele.projectId === projectState.currentProjectId ? 
                                         {marginLeft: 10, color: "white"} 
                                         : 
