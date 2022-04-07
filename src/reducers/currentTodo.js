@@ -1,12 +1,11 @@
 export default (state = {}, action)=>{
     switch(action.type){
-        case "SET_PROJECT":
+        case "SET_TODO":
             return {
                 projectId: action.projectId,
                 todoList: action.todoList,
-                todoId: action.todoId
             };
-        case "DEL_PROJECT":
+        case "DEL_TODO":
             return {};
         default:
             return state;

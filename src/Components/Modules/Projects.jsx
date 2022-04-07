@@ -21,7 +21,7 @@ const Projects = () => {
     const currentUserId = useSelector((state)=>state.currentUser.userId);
     const currentProject = useSelector((state)=>state.currentProject);
     const dispatch = useDispatch();
-    const { setCurrentProject } = bindActionCreators(actionCreators, dispatch);
+    const { setCurrentProject, setCurrentTodo } = bindActionCreators(actionCreators, dispatch);
 
 
     useEffect(()=>{
@@ -45,19 +45,20 @@ const Projects = () => {
     }
 
     const setCurrentProjectLocal = (projectId)=>{
-        axios.get("http://localhost:5000/api/todo/" + projectId).then((data)=>{
-            if(data.data.length === 0){
-                console.log(data);
-                axios.post("http://localhost:5000/api/todo/", {userId: projectState.currentUserId, list: ";;", projectId: projectId})
-            }
-        });
         setState(prev=>({...prev, currentProjectId: projectId}));
         setCurrentProject(projectId);
+        axios.get("http://localhost:5000/api/projects/" + projectState.currentUserId).then((data)=>{
+            data.data.map((ele)=>{
+                if(ele.projectId === projectId){
+                    // console.log(ele);
+                    setCurrentTodo(projectId, ele.todoList);
+                }
+            })
+        })
     }
 
     const delProject = (id)=>{
         axios.delete("http://localhost:5000/api/projects/" + id).then(()=>{
-            axios.delete("http://localhost:5000/api/todo/" + id);
             axios.get("http://localhost:5000/api/projects/" + projectState.currentUserId).then((data)=>{
                 setState((prev)=>({...prev, projects:[...data.data], currentProjectId: undefined}));
             })
@@ -79,11 +80,10 @@ const Projects = () => {
 
     const addProject = ()=>{
         if(projectState.projectName !== ""){
-            axios.post("http://localhost:5000/api/projects/", {projectName: projectState.projectName, userId: projectState.currentUserId}).then(()=>{
+            axios.post("http://localhost:5000/api/projects/", {projectName: projectState.projectName, userId: projectState.currentUserId, todoList: ";;"}).then(()=>{
                 setState((prev)=>({...prev, projectName: "", modalIsOpen: false}));
                 axios.get("http://localhost:5000/api/projects/" + projectState.currentUserId).then((data)=>{
                     setState((prev)=>({...prev, projects:[...data.data]}));
-                    
                 })
             })
             
@@ -141,12 +141,12 @@ const Projects = () => {
                                         {cursor: "pointer"}}
                                     // onClick={()=>setCurrentProjectLocal(ele.projectId)}
                                 >
-                                    <ListItem onClick={()=>setCurrentProjectLocal(ele.projectId)} onMouseEnter={()=>setOnMouseEnter(ele.projectId)} onMouseLeave={()=>setOnMouseLeave()}>
-                                        <ListItemText primary={ele.projectName}/>
+                                    <ListItem  onMouseEnter={()=>setOnMouseEnter(ele.projectId)} onMouseLeave={()=>setOnMouseLeave()}>
+                                        <ListItemText primary={ele.projectName} onClick={()=>setCurrentProjectLocal(ele.projectId)}/>
                                         {
                                             projectState.mouseEnter.state === true && projectState.mouseEnter.id === ele.projectId ?
-                                            <ListItemButton onClick={()=>delProject(ele.projectId)} style={{display: "flex", justifyContent: "flex-end", height: "100%", width: "0"}}>
-                                                <Button variant="outlined" color="error" style={{height: "2.2vh"}}>Delete</Button>
+                                            <ListItemButton  style={{display: "flex", justifyContent: "flex-end", height: "100%", width: "0"}}>
+                                                <Button variant="outlined" color="error" style={{height: "2.2vh"}} onClick={()=>delProject(ele.projectId)}>Delete</Button>
                                             </ListItemButton>
                                             :
                                             undefined

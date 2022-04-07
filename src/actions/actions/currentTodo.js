@@ -1,10 +1,9 @@
-export const setCurrentTodo = (projectId, todoList, todoId)=>{
+export const setCurrentTodo = (projectId, todoList)=>{
     return (dispatch)=>{
         dispatch({
             type: "SET_TODO",
             projectId,
-            todoList,
-            todoId
+            todoList
         })
     }
 }
