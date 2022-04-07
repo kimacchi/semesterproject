@@ -106,7 +106,7 @@ const Todo = () => {
       axios.get("http://localhost:5000/api/todo/" + currentProjectGlobal).then((data)=>{
         console.log(data.data);
         if(data.data.length !== 0){
-          setState(prev=>({...prev, currentTodoList: data.data[0].todoId}));
+          setState(prev=>({...prev, currentTodoId: data.data[0].todoId}));
         }
       })
     }, [currentProjectGlobal])
@@ -115,9 +115,9 @@ const Todo = () => {
         setState(prev => ({...prev, currentProject: currentProjectGlobal}))
     }, [currentProjectGlobal]);
 
-    if(todoState.currentUser === undefined && currentUserGlobal !== undefined){
-        setState(prev => ({...prev, currentUser: currentUserGlobal}))
-    }
+    // if(todoState.currentUser === undefined && currentUserGlobal !== undefined){
+    //     setState(prev => ({...prev, currentUser: currentUserGlobal}))
+    // }
     // console.log(todoState.currentProject);
 
     useEffect(()=>{
@@ -155,7 +155,7 @@ const Todo = () => {
         }
         setColumns((prev)=>({...prev, todoColumn: {name: "To do", items: todo}, progressColumn: {name: "In Progress", items: progress}, doneColumn: {name: "Done", items: done}}))
       }
-    }, [todoState.currentTodoList, currentProjectGlobal]);
+    }, [todoState.currentTodoList]);
 
     useEffect(()=>{
             
