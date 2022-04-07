@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { Button, TextField } from '@mui/material';
 import img from "../../assets/add_button.png";
 import Modal from "react-modal";
+import { convertToList, convertToString } from '../../functions/todoList';
 
 // the portion should be as follows:
 // [items seperated by comma];[items seperated by comma];[items seperated by comma]
@@ -108,13 +109,27 @@ const Todo = () => {
 
     useEffect(()=>{
       console.log(currentTodo);
+      if(currentTodo.todoList !== undefined){
+        var convertedList = convertToList(currentTodo.todoList);
+        setColumns(()=>({
+                        todoColumn: {name: "To do", items: convertedList[0]},
+                        progressColumn: {name: "In Progress", items: convertedList[1]},
+                        doneColumn: {name: "Done", items: convertedList[2]}
+                        }))
+      }
     }, [currentTodo])
 
     useEffect(()=>{
       setState((prev)=>({...prev, currentUserId: currentUser}))
     }, [currentUser])
 
-
+    useEffect(()=>{
+      var tempString = convertToString(columns.todoColumn.items, columns.progressColumn.items, columns.doneColumn.items)
+      console.log(tempString, currentProject);
+      if(currentProject !== undefined){
+        axios.put("http://localhost:5000/api/projects/"+ currentProject, {todoList: tempString});
+      }
+    }, [columns])
 
     const delItem = (id)=>{
       var todoRemovedIndex;
