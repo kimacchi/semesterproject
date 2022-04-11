@@ -46,9 +46,10 @@ const itemsFromBackend = [
   const onDragEnd = (result, columns, setColumns) => {
     if (!result.destination) return;
     const { source, destination } = result;
-  
+    console.log(source);
     if (source.droppableId !== destination.droppableId) {
       const sourceColumn = columns[source.droppableId];
+      console.log(sourceColumn);
       const destColumn = columns[destination.droppableId];
       const sourceItems = [...sourceColumn.items];
       const destItems = [...destColumn.items];
@@ -206,7 +207,10 @@ const Todo = () => {
                 key={columnId}
               >
                 <div style={{ margin: 0 }}>
-                  <Droppable droppableId={columnId} key={columnId}>
+                  <Droppable 
+                    droppableId={columnId}
+                    key={columnId} 
+                  >
                     {(provided, snapshot) => {
                         return (
                             <div

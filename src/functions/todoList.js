@@ -63,7 +63,7 @@ export const convertToString = (todoColumn, progressColumn, doneColumn)=>{
         }
         doneString = temp.join(",");
     }else{
-        if(todoColumn.length === 0){
+        if(doneColumn.length === 0){
             doneString = "";
         }else{
             doneString = doneColumn[0].content;
