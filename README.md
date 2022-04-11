@@ -25,7 +25,11 @@ Progress:
 Known problems:
 <br></br>
  Major:
-  * When there is more than one project linked to a user's account, switching from project 'a' to 'b' will copy project 'a''s To do widget data to project 'b', resulting in a situation of complete loss of project 'b''s data. The widget is unusable with more than one project.
+  * The app crashes when tried to move more than 4-5 tasks between todo process widgets or try to remove some when there are more than 4-5 tasks. The reason is unknown and it seems it doesn't occur on every scenario. 
   <br></br>
  Minor:
   * There are some performance issues with the whole app, but they are more appearent when using To do widget.  
+
+Fixed problems:
+<br></br>
+  * Fixed the bug where switching between projects would copy the todo information of the previous project to the next one. That bug is no longer present and you now can have as many projects as you like and have seperate todo data in them without any issue.
