@@ -15,9 +15,8 @@ Progress:
  - [x] Activity list
  - [x] Page to organize activities
  - [x] Projects list widget
- - [x] To do widget (has some major bugs, it is not usable if you have more than one project linked to your account. Although it works just fine if you have one project.)
- - [ ] Analytics widget
- - [ ] Page to manage budget
+ - [x] To do widget
+ - [ ] Pomodoro widget
  - [ ] Settings page (this is not official but I've been wanting to make a theme change feature and add some customization to the app)
  - [ ] Social page (this will happen only if I want to experiment with P2P messaging, social media features etc. )
 
