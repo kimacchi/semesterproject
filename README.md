@@ -24,8 +24,7 @@ Progress:
 
 Known problems:
 <br></br>
- Major:
-  * The app crashes when tried to move more than 4-5 tasks between todo process widgets or try to remove some when there are more than 4-5 tasks. The reason is unknown and it seems it doesn't occur on every scenario. 
+
   <br></br>
  Minor:
   * There are some performance issues with the whole app, but they are more appearent when using To do widget.  
@@ -33,3 +32,4 @@ Known problems:
 Fixed problems:
 <br></br>
   * Fixed the bug where switching between projects would copy the todo information of the previous project to the next one. That bug is no longer present and you now can have as many projects as you like and have seperate todo data in them without any issue.
+  * Fixed the bug where the entire app crashes on certain actions with todo widget. Appearently the problem was when moving something from the Done column it was checking for the To do column instead, which crashed the app.
