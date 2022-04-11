@@ -67,6 +67,7 @@ const itemsFromBackend = [
       });
     } else {
       const column = columns[source.droppableId];
+      console.log(column);
       const copiedItems = [...column.items];
       const [removed] = copiedItems.splice(source.index, 1);
       copiedItems.splice(destination.index, 0, removed);
@@ -101,7 +102,7 @@ const Todo = () => {
     const currentProject = useSelector((state)=>state.currentProject.projectId);
     const currentUser = useSelector((state)=>state.currentUser.userId);
     const currentTodo = useSelector((state)=>state.currentTodo);
-    const [todoState, setState] = useState({currentProjectId: undefined, currentUserId: undefined, currentList: undefined})
+    const [todoState, setState] = useState({currentProjectId: undefined, currentUserId: undefined, currentList: undefined, modalIsOpen: false, addingTo: undefined})
     
     useEffect(()=>{
       setState((prev)=>({...prev, currentProjectId: currentProject}))
@@ -130,6 +131,14 @@ const Todo = () => {
         axios.put("http://localhost:5000/api/projects/"+ currentProject, {todoList: tempString});
       }
     }, [columns])
+
+    const openModal = (columnId)=>{
+      setState((prev)=>({...prev, modalIsOpen: true, addingTo: columnId}));
+    }
+
+    const closeModal = ()=>{
+      setState((prev)=>({...prev, modalIsOpen: false, addingTo: undefined}));
+    }
 
     const delItem = (id)=>{
       var todoRemovedIndex;
@@ -173,14 +182,14 @@ const Todo = () => {
 
     return (
       <div style={{ display: "flex", justifyContent: "center", height: "100%", backgroundColor: "rgba(11,50,55,0.5)", borderRadius: "15px" }}>
-        {/* <Modal
+        <Modal
             className="projects-modal"
             isOpen={todoState.modalIsOpen}
             onRequestClose={closeModal}
         >
-            <TextField id="standard-basic" label="Name of task*" variant="standard" style={{marginTop: "1vh"}} onChange={onTextChange} />
-            <Button variant="contained" onClick={addTask}>Add</Button>
-        </Modal> */}
+            {/* <TextField id="standard-basic" label="Name of task*" variant="standard" style={{marginTop: "1vh"}} onChange={onTextChange} /> */}
+            {/* <Button variant="contained" onClick={addTask}>Add</Button> */}
+        </Modal>
         <DragDropContext
           onDragEnd={result => onDragEnd(result, columns, setColumns)}
         >
@@ -275,12 +284,20 @@ const Todo = () => {
                                 </div>
                             );
                           })}
-                          {/* <div className='no-activity__add-button'
-                            style={{margin: "3vh 0 0 43%"}}
-                            onClick={()=>openModal(columnId)}
-                          >
-                            <img src={img} alt="add item"></img>
-                          </div> */}
+
+                          {
+                            currentProject === undefined ? 
+                            undefined
+                            :
+                            <div 
+                              className='no-activity__add-button'
+                              style={{margin: "3vh 0 0 43%"}}
+                              onClick={()=>openModal(columnId)}
+                            >
+                              <img src={img} alt="add item"></img>
+                            </div>
+                          }
+                          
                           {provided.placeholder}
                         </div>
                       );
