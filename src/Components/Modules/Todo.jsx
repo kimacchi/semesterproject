@@ -103,7 +103,7 @@ const Todo = () => {
     const currentProject = useSelector((state)=>state.currentProject.projectId);
     const currentUser = useSelector((state)=>state.currentUser.userId);
     const currentTodo = useSelector((state)=>state.currentTodo);
-    const [todoState, setState] = useState({currentProjectId: undefined, currentUserId: undefined, currentList: undefined, modalIsOpen: false, addingTo: undefined})
+    const [todoState, setState] = useState({currentProjectId: undefined, currentUserId: undefined, currentList: undefined, modalIsOpen: false, addingTo: undefined, addingTask: undefined})
     
     useEffect(()=>{
       setState((prev)=>({...prev, currentProjectId: currentProject}))
@@ -180,6 +180,30 @@ const Todo = () => {
       }
     }
 
+    const onTextChange = (e)=>{
+      const text = e.target.value;
+      setState((prev)=>({...prev, addingTask: text}));
+    }
+
+    const addTask = ()=>{
+      if(todoState.addingTo === "todoColumn"){
+        var temp = [...columns.todoColumn.items];
+        temp.push({content: todoState.addingTask, id: uuid()})
+        setColumns((prev)=>({...prev, todoColumn: {name: "To do", items: temp}}))
+      }
+      else if(todoState.addingTo === "progressColumn"){
+        var temp = [...columns.progressColumn.items];
+        temp.push({content: todoState.addingTask, id: uuid()})
+        setColumns((prev)=>({...prev, progressColumn: {name: "In Progress", items: temp}}))
+      }
+      else if(todoState.addingTo === "doneColumn"){
+        var temp = [...columns.doneColumn.items];
+        temp.push({content: todoState.addingTask, id: uuid()});
+        setColumns((prev)=>({...prev, doneColumn: {name: "Done", items: temp}}))
+      }
+      setState(prev=>({...prev, modalIsOpen: false}));
+    }
+
 
     return (
       <div style={{ display: "flex", justifyContent: "center", height: "100%", backgroundColor: "rgba(11,50,55,0.5)", borderRadius: "15px" }}>
@@ -188,8 +212,8 @@ const Todo = () => {
             isOpen={todoState.modalIsOpen}
             onRequestClose={closeModal}
         >
-            {/* <TextField id="standard-basic" label="Name of task*" variant="standard" style={{marginTop: "1vh"}} onChange={onTextChange} /> */}
-            {/* <Button variant="contained" onClick={addTask}>Add</Button> */}
+            <TextField id="standard-basic" label="Name of task*" variant="standard" style={{marginTop: "1vh"}} onChange={onTextChange} />
+            <Button variant="contained" onClick={addTask}>Add</Button>
         </Modal>
         <DragDropContext
           onDragEnd={result => onDragEnd(result, columns, setColumns)}
