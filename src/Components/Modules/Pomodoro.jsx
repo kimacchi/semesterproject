@@ -1,5 +1,3 @@
-import { set } from 'date-fns';
-import intervalToDuration from 'date-fns/intervalToDuration/index.js';
 import React, {useState, useEffect } from 'react'
 
 
@@ -10,7 +8,7 @@ const Pomodoro = () => {
 
     useEffect(()=>{
         setCounter((prev)=>({...prev, minutes: timerState.session, leftSession: timerState.sessionCount}));
-    }, [timerState.sessionCount])
+    }, [timerState.sessionCount, timerState.session])
 
     useEffect(()=>{
         setCounter((prev)=>({...prev, minutes: timerState.session}));
@@ -42,7 +40,7 @@ const Pomodoro = () => {
                 }
             }, 1000)
         }
-    }, [timerState.started, counter.seconds])
+    }, [timerState.started, counter.seconds, timerState.break, counter.leftSession, counter.minutes, timerState.onBreak, timerState.session])
 
 
   return (

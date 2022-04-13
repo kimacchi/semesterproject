@@ -1,11 +1,8 @@
 import React from 'react';
-import {motion, AnimatePresence} from "framer-motion";
+import {motion} from "framer-motion";
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { actionCreators } from '../actions/index';
 import Activities from './Modules/Activities';
 import Projects from "./Modules/Projects";
 import Todo from './Modules/Todo';
@@ -13,20 +10,14 @@ import Pomodoro from './Modules/Pomodoro';
 
 
 const Home = () => {
-    
-    // JUST FOR DEVELOPMENT DONT FUCKING FORGET TO DELETE THIS
-    const dispacth = useDispatch();
-    const {setCurrentUser} = bindActionCreators(actionCreators, dispacth);
-
-    useEffect(()=>{
-        setCurrentUser("Kimacchi", 2024);
-    }, []);
-
-    // DELETE IT!!!!!!!!!!!!!!
 
     const currentUser = useSelector((state)=>state.currentUser);
     const navigate = useNavigate();
-
+    useEffect(()=>{
+        if(currentUser.userId === undefined){
+            navigate("/");
+        }
+    }, [currentUser, navigate])
     
 
   return (
