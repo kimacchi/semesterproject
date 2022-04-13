@@ -1,0 +1,167 @@
+.pomodoro_wrapper{
+    background-color: rgba(12,41,41,0.3);
+    height: 92%;
+    width: 98%;
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pomodoro__timer{
+    // margin-top: 2vh;
+    width: 13vw;
+    height: 13vw;
+    border-radius: 50%;
+    background-color: rgba(72,199,161,0.49);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 8vw;
+}
+
+.pomodoro__timer-p{
+    position: absolute;
+    margin-left: 2.5vw;
+    font-family: 'Bellota', cursive;
+    font-size: 48px;
+    color: white;
+    text-align: center;
+}
+
+.pomodoro__timer-buttons{
+    height: 13vw;
+    margin-left: 7.5vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.pomodoro__timer-middle_button{
+    width: 3vw;
+    height: 3vw;
+    margin-left: 3.5vw;
+    background-color: rgba(68, 165, 95, 0.85);
+    border: none;
+    outline: none;
+    border-radius: 50%;
+}
+
+.pomodoro__timer-button{
+    width: 3vw;
+    height: 3vw;
+    margin-left: 2vw;
+    background-color: rgba(27, 101, 52, 0.91);
+    border: none;
+    outline: none;
+    border-radius: 50%;
+}
+
+.pomodoro__timer-buttons button:hover{
+    cursor: pointer;
+}
+
+.pomodoro__timer-buttons button:active{
+    box-shadow: inset 0 0px 10px 3px rgba(0, 0, 0, 0.229);
+}
+
+.pomodoro__timer-settings{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin-right: 13vw;
+    font-family: 'Bellota', cursive;
+    font-size: 24px;
+    color: white;
+    text-align: center;
+    
+}
+
+.session__setting{
+    width: 30vw;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.session__setting span{
+    font-family: "Barlow Condensed";
+    font-size: 26px;
+}
+
+.session__setting-second span{
+    font-family: "Barlow Condensed";
+    font-size: 26px;
+}
+
+.break__setting span{
+    font-family: "Barlow Condensed";
+    font-size: 26px;
+}
+
+.session__setting button{
+    background-color: rgba(36, 109, 87, 0.73);
+    color: white;
+    font-family: 'Bellota', cursive;
+    font-size: 30px;
+    text-align:center;
+    width: 3vw;
+    height: 3vw;
+    border: none;
+    border-radius: 50%;
+    outline: none;
+}
+
+.session__setting-second{
+    width: 30vw;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-left: 13vw;
+}
+
+.session__setting-second button{
+    background-color: rgba(36, 109, 87, 0.73);
+    color: white;
+    font-family: 'Bellota', cursive;
+    font-size: 30px;
+    text-align:center;
+    width: 3vw;
+    height: 3vw;
+    border: none;
+    border-radius: 50%;
+    outline: none;
+}
+
+.break__setting{
+    width: 30vw;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.break__setting button{
+    background-color: rgba(36, 109, 87, 0.73);
+    color: white;
+    font-family: 'Bellota', cursive;
+    font-size: 30px;
+    text-align:center;
+    width: 3vw;
+    height: 3vw;
+    border: none;
+    border-radius: 50%;
+    outline: none;
+}
+
+.pomodoro__timer-settings button{
+    cursor: pointer;
+}
+
+.pomodoro__timer-settings button:active{
+    box-shadow: inset 0 0px 10px 3px rgba(0, 0, 0, 0.229);
+}
+
+.pomodoro__timer-settings button:disabled{
+    cursor:not-allowed;
+    background-color: darken(rgba(36, 109, 87, 0.73), 13);
+}

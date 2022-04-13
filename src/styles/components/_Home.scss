@@ -32,9 +32,13 @@
 }
 
 .home__expenses{
-    background-color: red;
+    background-color: rgba(11,50,55,0.5);
     grid-area: exp;
     border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .home__projects{
