@@ -58,7 +58,9 @@
 
 .login-page__login-section__clicks{
     display: grid;
-    grid-template-areas: "a b""c d";
+    grid-template-areas: 
+    "a b"
+    "c d";
     column-gap: 14vw;
     margin-top: 20px;
     color: white;

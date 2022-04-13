@@ -5,8 +5,8 @@ import React, {useState, useEffect } from 'react'
 
 
 const Pomodoro = () => {
-    const [timerState, setState] = useState({session: 10, break: 3, sessionCount: 1, started: false, paused: false, onBreak: false})
-    const [counter, setCounter] = useState({minutes: 25, seconds: 0, leftSession: 1});
+    const [timerState, setState] = useState({session: 25, break: 5, sessionCount: 2, started: false, paused: false, onBreak: false})
+    const [counter, setCounter] = useState({minutes: 25, seconds: 0, leftSession: 2});
 
     useEffect(()=>{
         setCounter((prev)=>({...prev, minutes: timerState.session, leftSession: timerState.sessionCount}));
@@ -57,6 +57,9 @@ const Pomodoro = () => {
                     onClick={()=>{
                             setState((prev)=>({...prev, started: false, paused: false, onBreak: false}));
                             setCounter((prev)=>({...prev, minutes: timerState.session, seconds: 0, leftSession: timerState.sessionCount}));
+                            setTimeout(()=>{
+                                setCounter((prev)=>({...prev, minutes: timerState.session, seconds: 0, leftSession: timerState.sessionCount}));
+                            }, 1000)
                         }
                     }
                 >
