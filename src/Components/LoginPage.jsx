@@ -227,7 +227,7 @@ const LoginPage = () => {
                 animate={{y: 0}}
                 transition={{duration: 1}}
             >
-                Undecided Name
+                Focus
             </motion.div>
             <motion.div 
                 className='login-page__login-section'
