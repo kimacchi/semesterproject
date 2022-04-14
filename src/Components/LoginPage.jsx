@@ -143,7 +143,7 @@ const LoginPage = () => {
       var labelPassword = <div><p>PASSWORD</p></div>
 
     useEffect(()=>{
-        axios.get("http://localhost:5000/api/users").then((data)=>{
+        axios.get("https://focusbackendapi.azurewebsites.net/api/users").then((data)=>{
             setState((prevState)=>({...prevState, allUsers: [...data.data]}))
         })
     }, []);
@@ -188,13 +188,13 @@ const LoginPage = () => {
         const email = e.target[2].value;
         
         if(validateForm(email) && validateUsername(username) && validatePassword(password) && userState.allUsers.every((ele)=>ele.Username.toLowerCase() !== username.toLowerCase()) && userState.allUsers.every((ele)=>ele.Email !== email)){
-            axios.post("http://localhost:5000/api/users", {
+            axios.post("https://focusbackendapi.azurewebsites.net/api/users", {
                 Username: username.toLowerCase(),
                 UserPassword: password,
                 Email: email
             }).then((response)=>{
                 console.log(response);
-                axios.get("http://localhost:5000/api/users").then((data)=>{
+                axios.get("https://focusbackendapi.azurewebsites.net/api/users").then((data)=>{
                     setState((prevState)=>({...prevState, allUsers: [...data.data]}))
                     window.location.reload();
                 });

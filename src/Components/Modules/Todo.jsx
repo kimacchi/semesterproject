@@ -101,6 +101,7 @@ const Todo = () => {
       }
     });
     const currentProject = useSelector((state)=>state.currentProject.projectId);
+    const currentProjectName = useSelector((state)=>state.currentProject.projectName);
     const currentUser = useSelector((state)=>state.currentUser.userId);
     const currentTodo = useSelector((state)=>state.currentTodo);
     const [todoState, setState] = useState({currentProjectId: undefined, currentUserId: undefined, currentList: undefined, modalIsOpen: false, addingTo: undefined, addingTask: undefined})
@@ -129,7 +130,10 @@ const Todo = () => {
       var tempString = convertToString(columns.todoColumn.items, columns.progressColumn.items, columns.doneColumn.items)
       console.log(tempString, currentProject);
       if(currentProject !== undefined){
-        axios.put("http://localhost:5000/api/projects/"+ currentProject, {todoList: tempString});
+        axios.get("https://focusbackendapi.azurewebsites.net/api/projects/"+ currentProject).then((data)=>{
+          console.log(data);
+          axios.put("https://focusbackendapi.azurewebsites.net/api/projects/"+ currentProject, {todoList: tempString, projectId: currentProject, projectName: data.data[0].projectName ? data.data[0].projectName : "unknown"});
+        })
       }
     }, [columns])
 

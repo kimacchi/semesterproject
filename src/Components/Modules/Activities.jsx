@@ -89,14 +89,14 @@ const Activities = () => {
     }, [currentId])
     // useEffect(()=>{
     //     if(activityState.currentId !== undefined){
-    //         axios.get("http://localhost:5000/api/activities/" + activityState.currentId).then((data)=>{
+    //         axios.get("https://focusbackendapi.azurewebsites.net/api/activities/" + activityState.currentId).then((data)=>{
     //             setState((prev)=>({...prev, activities:[...data.data]}));
     //         })
     //     }
     // }, []);
     if(activityState.activities.length === 0){
         if(activityState.currentId !== undefined){
-            axios.get("http://localhost:5000/api/activities/" + activityState.currentId).then((data)=>{
+            axios.get("https://focusbackendapi.azurewebsites.net/api/activities/" + activityState.currentId).then((data)=>{
                 setState((prev)=>({...prev, activities:[...data.data]}));
             })
         }
@@ -147,13 +147,13 @@ const Activities = () => {
         }
         const dateTime = `${activityState.date.getFullYear()}-${tempMonth}-${tempDay}T${tempHour}:${tempMin}:00`;
         console.log(dateTime);
-        axios.post("http://localhost:5000/api/activities/", {
+        axios.post("https://focusbackendapi.azurewebsites.net/api/activities/", {
             activityName: activityState.activityName,
             userId: activityState.currentId,
             description: activityState.activityDescription,
             activityTime: dateTime
         }).then(()=>{
-            axios.get("http://localhost:5000/api/activities/" + activityState.currentId).then((data)=>{
+            axios.get("https://focusbackendapi.azurewebsites.net/api/activities/" + activityState.currentId).then((data)=>{
                 setState((prev)=>({...prev, activities:[...data.data]}));
             })
         })
@@ -161,8 +161,8 @@ const Activities = () => {
     }
 
     const deleteActivity = ()=>{
-        axios.delete("http://localhost:5000/api/activities/" + activityState.currentActivity.activityId).then(()=>{
-            axios.get("http://localhost:5000/api/activities/" + activityState.currentId).then((data)=>{
+        axios.delete("https://focusbackendapi.azurewebsites.net/api/activities/" + activityState.currentActivity.activityId).then(()=>{
+            axios.get("https://focusbackendapi.azurewebsites.net/api/activities/" + activityState.currentId).then((data)=>{
                 setState((prev)=>({...prev, activities:[...data.data]}));
             })
         })
