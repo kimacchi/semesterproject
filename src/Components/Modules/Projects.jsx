@@ -30,7 +30,7 @@ const Projects = () => {
 
     if(projectState.projects.length === 0){
         if(projectState.currentUserId !== undefined){
-            axios.get("https://focusbackendapi.azurewebsites.net/api/projects/" + projectState.currentUserId).then((data)=>{
+            axios.get(process.env.REACT_APP_API+"projects/" + projectState.currentUserId).then((data)=>{
                 setState((prev)=>({...prev, projects:[...data.data]}));
             })
         }
@@ -47,7 +47,7 @@ const Projects = () => {
     const setCurrentProjectLocal = (projectId)=>{
         setState(prev=>({...prev, currentProjectId: projectId}));
         setCurrentProject(projectId);
-        axios.get("https://focusbackendapi.azurewebsites.net/api/projects/" + projectState.currentUserId).then((data)=>{
+        axios.get(process.env.REACT_APP_API+"projects/" + projectState.currentUserId).then((data)=>{
             data.data.map((ele)=>{
                 if(ele.projectId === projectId){
                     // console.log(ele);
@@ -58,8 +58,8 @@ const Projects = () => {
     }
 
     const delProject = (id)=>{
-        axios.delete("https://focusbackendapi.azurewebsites.net/api/projects/" + id).then(()=>{
-            axios.get("https://focusbackendapi.azurewebsites.net/api/projects/" + projectState.currentUserId).then((data)=>{
+        axios.delete(process.env.REACT_APP_API+"projects/" + id).then(()=>{
+            axios.get(process.env.REACT_APP_API+"projects/" + projectState.currentUserId).then((data)=>{
                 setState((prev)=>({...prev, projects:[...data.data], currentProjectId: undefined}));
             })
         })
@@ -80,9 +80,9 @@ const Projects = () => {
 
     const addProject = ()=>{
         if(projectState.projectName !== ""){
-            axios.post("https://focusbackendapi.azurewebsites.net/api/projects/", {projectName: projectState.projectName, userId: projectState.currentUserId, todoList: ";;"}).then(()=>{
+            axios.post(process.env.REACT_APP_API+"projects/", {projectName: projectState.projectName, userId: projectState.currentUserId, todoList: ";;"}).then(()=>{
                 setState((prev)=>({...prev, projectName: "", modalIsOpen: false}));
-                axios.get("https://focusbackendapi.azurewebsites.net/api/projects/" + projectState.currentUserId).then((data)=>{
+                axios.get(process.env.REACT_APP_API+"projects/" + projectState.currentUserId).then((data)=>{
                     setState((prev)=>({...prev, projects:[...data.data]}));
                 })
             })

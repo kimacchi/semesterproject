@@ -10,13 +10,13 @@ import { actionCreators } from '../actions/index';
 var axios = require("axios");
 
 
-function validateUsername(x){
+function validateusername(x){
     var re = /^[a-zA-Z0-9]+$/;
     if(x === ""){
-        alert("Username must be filled out");
+        alert("username must be filled out");
         return false;
     } else if (re.test(String(x).toLowerCase()) === false){
-        alert("Username must be valid. Please only use letters and numbers.");
+        alert("username must be valid. Please only use letters and numbers.");
         return false;
     }
     return true;
@@ -37,11 +37,11 @@ function validateForm(x) {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     
     if (x === "") {
-      alert("Email must be filled out");
+      alert("email must be filled out");
       
       return false;
     } else if (re.test(String(x).toLowerCase()) === false) {
-      alert("Email must be valid");
+      alert("email must be valid");
     
       return false;
     }
@@ -139,11 +139,11 @@ const LoginPage = () => {
         }
       }, []);
 
-      var labelUsername = <div><p style={{color: "crimson", fontWeight:900}}>{userState.wrong ? "Username or password is incorrect." : ""}</p><p>USERNAME</p></div>
+      var labelusername = <div><p style={{color: "crimson", fontWeight:900}}>{userState.wrong ? "username or password is incorrect." : ""}</p><p>username</p></div>
       var labelPassword = <div><p>PASSWORD</p></div>
 
     useEffect(()=>{
-        axios.get("https://focusbackendapi.azurewebsites.net/api/users").then((data)=>{
+        axios.get(process.env.REACT_APP_API+"/users").then((data)=>{
             setState((prevState)=>({...prevState, allUsers: [...data.data]}))
         })
     }, []);
@@ -166,15 +166,15 @@ const LoginPage = () => {
     const onFormSubmit = (e)=>{
         e.preventDefault();
         console.log(e);
-        if(userState.allUsers.every((ele)=>ele.Username.toLowerCase() !== userState.username.toLowerCase() && ele.UserPassword !== userState.password)){
+        if(userState.allUsers.every((ele)=>ele.username.toLowerCase() !== userState.username.toLowerCase() && ele.userPassword !== userState.password)){
             e.target[0].value = "";
             e.target[1].value = "";
             setState((prevState)=>({...prevState, wrong: true}));
         }else{
             userState.allUsers.forEach(ele => {
-                if(ele.Username.toLowerCase() === userState.username.toLowerCase() && ele.UserPassword === userState.password){
+                if(ele.username.toLowerCase() === userState.username.toLowerCase() && ele.userPassword === userState.password){
                     setState((prevState)=>({...prevState, isLogged: !prevState.isLogged, wrong: false}))
-                    setCurrentUser(ele.Username, ele.UserId);
+                    setCurrentUser(ele.username, ele.UserId);
                     navigate("/home");
                 }
             });
@@ -187,21 +187,21 @@ const LoginPage = () => {
         const password = e.target[1].value;
         const email = e.target[2].value;
         
-        if(validateForm(email) && validateUsername(username) && validatePassword(password) && userState.allUsers.every((ele)=>ele.Username.toLowerCase() !== username.toLowerCase()) && userState.allUsers.every((ele)=>ele.Email !== email)){
-            axios.post("https://focusbackendapi.azurewebsites.net/api/users", {
-                Username: username.toLowerCase(),
-                UserPassword: password,
-                Email: email
+        if(validateForm(email) && validateusername(username) && validatePassword(password) && userState.allUsers.every((ele)=>ele.username.toLowerCase() !== username.toLowerCase()) && userState.allUsers.every((ele)=>ele.email !== email)){
+            axios.post(process.env.REACT_APP_API+"/users", {
+                username: username.toLowerCase(),
+                userPassword: password,
+                email: email
             }).then((response)=>{
                 console.log(response);
-                axios.get("https://focusbackendapi.azurewebsites.net/api/users").then((data)=>{
+                axios.get(process.env.REACT_APP_API+"/users").then((data)=>{
                     setState((prevState)=>({...prevState, allUsers: [...data.data]}))
                     window.location.reload();
                 });
             })
-        }else if(userState.allUsers.every((ele)=>ele.Username.toLowerCase() !== username.toLowerCase()) !== true){
+        }else if(userState.allUsers.every((ele)=>ele.username.toLowerCase() !== username.toLowerCase()) !== true){
             alert("This username is taken.");
-        }else if(userState.allUsers.every((ele)=>ele.Email.toLowerCase() !== email.toLowerCase()) !== true){
+        }else if(userState.allUsers.every((ele)=>ele.email.toLowerCase() !== email.toLowerCase()) !== true){
             alert("This email is taken.");
         }
         e.target[0].value = "";
@@ -237,7 +237,7 @@ const LoginPage = () => {
             >
                 <form onSubmit={userState.isRegistering ? onFormSubmitRegister : onFormSubmit} className='login-page__login-section__form'>
                     <div className='login_form-inputs'>
-                        <label style={{marginBottom:"0px", color: "white", fontFamily: "Barlow Condensed", paddingLeft: "12px"}}>{labelUsername}</label>
+                        <label style={{marginBottom:"0px", color: "white", fontFamily: "Barlow Condensed", paddingLeft: "12px"}}>{labelusername}</label>
                         <input className='login_form-inputs__input' onChange={onTextChangeUsername} style={{resize:"none", borderRadius: "10px", backgroundColor: "#CFE4FF"}} ></input>
                         <label style={{marginBottom:"0px", marginTop: "0px", color: "white", fontFamily: "Barlow Condensed", paddingLeft: "12px"}}>{labelPassword}</label>
                         <input className='login_form-inputs__input' onChange={onTextChangePassword} style={{resize:"none", borderRadius: "10px", backgroundColor: "#CFE4FF", marginBottom: "0px"}} type="password"></input>

@@ -130,9 +130,9 @@ const Todo = () => {
       var tempString = convertToString(columns.todoColumn.items, columns.progressColumn.items, columns.doneColumn.items)
       console.log(tempString, currentProject);
       if(currentProject !== undefined){
-        axios.get("https://focusbackendapi.azurewebsites.net/api/projects/"+ currentProject).then((data)=>{
+        axios.get(process.env.REACT_APP_API  + "projects/"+ currentProject).then((data)=>{
           console.log(data);
-          axios.put("https://focusbackendapi.azurewebsites.net/api/projects/"+ currentProject, {todoList: tempString, projectId: currentProject, projectName: data.data[0].projectName ? data.data[0].projectName : "unknown"});
+          axios.put(process.env.REACT_APP_API  + "projects/"+ currentProject, {todoList: tempString /*, projectId: currentProject, projectName: data.data[0].projectName ? data.data[0].projectName : "unknown"*/});
         })
       }
     }, [columns])
