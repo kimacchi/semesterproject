@@ -41,3 +41,6 @@ Fixed problems:
 
 ##### If you want to run the server locally, which I will also do during presentation, there must be some changes made to the frontend files. Current release is tied to online database which I will not share the link of due to concerns of missuse. Although I plan on creating another repository for locally hostable frontend server.
 
+##### Initial backend: https://github.com/kimacchi/semesterproject_backend
+##### Online backend: https://github.com/kimacchi/FocusAzureBackend
+
