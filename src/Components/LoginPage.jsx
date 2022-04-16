@@ -174,7 +174,7 @@ const LoginPage = () => {
             userState.allUsers.forEach(ele => {
                 if(ele.username.toLowerCase() === userState.username.toLowerCase() && ele.userPassword === userState.password){
                     setState((prevState)=>({...prevState, isLogged: !prevState.isLogged, wrong: false}))
-                    setCurrentUser(ele.username, ele.UserId);
+                    setCurrentUser(ele.username, ele.userId);
                     navigate("/home");
                 }
             });
