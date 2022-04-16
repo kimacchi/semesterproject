@@ -132,7 +132,7 @@ const Todo = () => {
       if(currentProject !== undefined){
         axios.get(process.env.REACT_APP_API  + "projects/"+ currentProject).then((data)=>{
           console.log(data);
-          axios.patch(process.env.REACT_APP_API  + "projects/"+ currentProject, {todoList: tempString /*, projectId: currentProject, projectName: data.data[0].projectName ? data.data[0].projectName : "unknown"*/});
+          axios.patch(process.env.REACT_APP_API  + "projects/"+ currentProject, [{op: "replace", path: "todoList", value: tempString}]);
         })
       }
     }, [columns])
