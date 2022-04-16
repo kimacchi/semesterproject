@@ -139,7 +139,7 @@ const LoginPage = () => {
         }
       }, []);
 
-      var labelusername = <div><p style={{color: "crimson", fontWeight:900}}>{userState.wrong ? "username or password is incorrect." : ""}</p><p>username</p></div>
+      var labelusername = <div><p style={{color: "crimson", fontWeight:900}}>{userState.wrong ? "username or password is incorrect." : ""}</p><p>USERNAME</p></div>
       var labelPassword = <div><p>PASSWORD</p></div>
 
     useEffect(()=>{
@@ -165,7 +165,6 @@ const LoginPage = () => {
 
     const onFormSubmit = (e)=>{
         e.preventDefault();
-        console.log(e);
         if(userState.allUsers.every((ele)=>ele.username.toLowerCase() !== userState.username.toLowerCase() && ele.userPassword !== userState.password)){
             e.target[0].value = "";
             e.target[1].value = "";
@@ -193,7 +192,6 @@ const LoginPage = () => {
                 userPassword: password,
                 email: email
             }).then((response)=>{
-                console.log(response);
                 axios.get(process.env.REACT_APP_API+"/users").then((data)=>{
                     setState((prevState)=>({...prevState, allUsers: [...data.data]}))
                     window.location.reload();

@@ -46,10 +46,8 @@ const itemsFromBackend = [
   const onDragEnd = (result, columns, setColumns) => {
     if (!result.destination) return;
     const { source, destination } = result;
-    console.log(source);
     if (source.droppableId !== destination.droppableId) {
       const sourceColumn = columns[source.droppableId];
-      console.log(sourceColumn);
       const destColumn = columns[destination.droppableId];
       const sourceItems = [...sourceColumn.items];
       const destItems = [...destColumn.items];
@@ -68,7 +66,6 @@ const itemsFromBackend = [
       });
     } else {
       const column = columns[source.droppableId];
-      console.log(column);
       const copiedItems = [...column.items];
       const [removed] = copiedItems.splice(source.index, 1);
       copiedItems.splice(destination.index, 0, removed);
@@ -111,7 +108,6 @@ const Todo = () => {
     }, [currentProject])
 
     useEffect(()=>{
-      console.log(currentTodo);
       if(currentTodo.todoList !== undefined){
         var convertedList = convertToList(currentTodo.todoList);
         setColumns(()=>({
@@ -128,10 +124,8 @@ const Todo = () => {
 
     useEffect(()=>{
       var tempString = convertToString(columns.todoColumn.items, columns.progressColumn.items, columns.doneColumn.items)
-      console.log(tempString, currentProject);
       if(currentProject !== undefined){
         axios.get(process.env.REACT_APP_API  + "projects/"+ currentProject).then((data)=>{
-          console.log(data);
           axios.patch(process.env.REACT_APP_API  + "projects/"+ currentProject, [{op: "replace", path: "todoList", value: tempString}]);
         })
       }

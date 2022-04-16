@@ -146,7 +146,6 @@ const Activities = () => {
             tempMin = `${activityState.time.getMinutes()}`
         }
         const dateTime = `${activityState.date.getFullYear()}-${tempMonth}-${tempDay}T${tempHour}:${tempMin}:00`;
-        console.log(dateTime);
         axios.post(process.env.REACT_APP_API+"activities/", {
             activityName: activityState.activityName,
             userId: activityState.currentId,
