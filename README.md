@@ -25,14 +25,13 @@ Progress:
 
 Known problems:
 <br></br>
- Major:
-  * There are unreasonable amounts of requests to the backend when someone signs in. Resulting in the backend server crashing and reseting the database.
   <br></br>
  Minor:
   * There are some performance issues with the whole app.  
 
 Fixed problems:
 <br></br>
+  * Fixed the lifecycle bug where there would be hundreds of requests to the backend because of the some requests being used outside of their related states.
   * Fixed patch request, and issues connecting to the database.
   * Fixed the bug where switching between projects would copy the todo information of the previous project to the next one. That bug is no longer present and you now can have as many projects as you like and have seperate todo data in them without any issue.
   * Fixed the bug where the entire app crashes on certain actions with todo widget. Appearently the problem was when moving something from the Done column it was checking for the To do column instead, which crashed the app.
@@ -45,3 +44,19 @@ Fixed problems:
 ##### Initial backend: https://github.com/kimacchi/semesterproject_backend
 ##### Online backend: https://github.com/kimacchi/FocusAzureBackend
 
+
+### Screenshots
+
+##### Login/Register Page: 
+![image](https://user-images.githubusercontent.com/85843873/163808312-b4155038-557b-4c77-8cb3-1c4bc64e4f8f.png)
+![image](https://user-images.githubusercontent.com/85843873/163808369-9eaac5dd-45fe-42af-9815-73f5acae4dd7.png)
+![image](https://user-images.githubusercontent.com/85843873/163808397-b21d863a-ace3-4138-b3d1-f6f485c2531b.png)
+
+##### Home Page:
+![image](https://user-images.githubusercontent.com/85843873/163808557-999fd2f7-f232-4602-b8ce-980e5f93456c.png)
+
+##### Adding An Activity
+![image](https://user-images.githubusercontent.com/85843873/163808641-2674884c-4866-4596-9086-1cb5f7f2472d.png)
+
+##### Adding A Project (same widget with adding a to do task)
+![image](https://user-images.githubusercontent.com/85843873/163808748-6981d3ed-a483-488c-8d26-aac955b1637b.png)
