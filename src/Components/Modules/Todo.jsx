@@ -125,9 +125,7 @@ const Todo = () => {
     useEffect(()=>{
       var tempString = convertToString(columns.todoColumn.items, columns.progressColumn.items, columns.doneColumn.items)
       if(currentProject !== undefined){
-        axios.get(process.env.REACT_APP_API  + "projects/"+ currentProject).then((data)=>{
-          axios.patch(process.env.REACT_APP_API  + "projects/"+ currentProject, [{op: "replace", path: "todoList", value: tempString}]);
-        })
+        axios.patch(process.env.REACT_APP_API  + "projects/"+ currentProject, [{op: "replace", path: "todoList", value: tempString}]);
       }
     }, [columns])
 

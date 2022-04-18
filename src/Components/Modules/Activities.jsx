@@ -94,13 +94,19 @@ const Activities = () => {
     //         })
     //     }
     // }, []);
-    if(activityState.activities.length === 0){
-        if(activityState.currentId !== undefined){
-            axios.get(process.env.REACT_APP_API+"activities/" + activityState.currentId).then((data)=>{
-                setState((prev)=>({...prev, activities:[...data.data]}));
-            })
+
+
+    useEffect(()=>{
+        if(activityState.activities.length === 0){
+            if(activityState.currentId !== undefined){
+                axios.get(process.env.REACT_APP_API+"activities/" + activityState.currentId).then((data)=>{
+                    setState((prev)=>({...prev, activities:[...data.data]}));
+                })
+            }
         }
-    }
+    }, [activityState.activities]);
+
+
     useEffect(()=>{
         setState(prev=>({...prev, activities: activityState.activities.sort((a,b)=>{
             const timeA = new Date(a.activityTime).getTime();

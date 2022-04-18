@@ -19,7 +19,7 @@ Modal.setAppElement("#root")
 const Projects = () => {
     const [projectState, setState] = useState({projects: [], currentUserId: undefined, currentProjectId: undefined, mouseEnter: {state: false, id: undefined}, projectName: "", modalIsOpen: false});
     const currentUserId = useSelector((state)=>state.currentUser.userId);
-    const currentProject = useSelector((state)=>state.currentProject);
+    const currentProject = useSelector((state)=>state.currentProject.projectId);
     const dispatch = useDispatch();
     const { setCurrentProject, setCurrentTodo } = bindActionCreators(actionCreators, dispatch);
 
@@ -28,13 +28,15 @@ const Projects = () => {
         setState(prev=>({...prev, currentUserId}))
     }, [currentUserId])
 
-    if(projectState.projects.length === 0){
-        if(projectState.currentUserId !== undefined){
-            axios.get(process.env.REACT_APP_API+"projects/" + projectState.currentUserId).then((data)=>{
-                setState((prev)=>({...prev, projects:[...data.data]}));
-            })
+    useEffect(()=>{
+        if(projectState.projects.length === 0){
+            if(currentUserId !== undefined){
+                axios.get(process.env.REACT_APP_API+"projects/" + currentUserId).then((data)=>{
+                    setState((prev)=>({...prev, projects:[...data.data]}));
+                })
+            }
         }
-    }
+    }, [currentProject])
 
     const setOnMouseEnter = (id)=>{
         setState(prev=>({...prev, mouseEnter: {state: true, id: id}}))
@@ -47,7 +49,7 @@ const Projects = () => {
     const setCurrentProjectLocal = (projectId)=>{
         setState(prev=>({...prev, currentProjectId: projectId}));
         setCurrentProject(projectId);
-        axios.get(process.env.REACT_APP_API+"projects/" + projectState.currentUserId).then((data)=>{
+        axios.get(process.env.REACT_APP_API+"projects/" + currentUserId).then((data)=>{
             data.data.map((ele)=>{
                 if(ele.projectId === projectId){
                     // console.log(ele);
@@ -59,7 +61,7 @@ const Projects = () => {
 
     const delProject = (id)=>{
         axios.delete(process.env.REACT_APP_API+"projects/" + id).then(()=>{
-            axios.get(process.env.REACT_APP_API+"projects/" + projectState.currentUserId).then((data)=>{
+            axios.get(process.env.REACT_APP_API+"projects/" + currentUserId).then((data)=>{
                 setState((prev)=>({...prev, projects:[...data.data], currentProjectId: undefined}));
             })
         })
@@ -80,9 +82,9 @@ const Projects = () => {
 
     const addProject = ()=>{
         if(projectState.projectName !== ""){
-            axios.post(process.env.REACT_APP_API+"projects/", {projectName: projectState.projectName, userId: projectState.currentUserId, todoList: ";;"}).then(()=>{
+            axios.post(process.env.REACT_APP_API+"projects/", {projectName: projectState.projectName, userId: currentUserId, todoList: ";;"}).then(()=>{
                 setState((prev)=>({...prev, projectName: "", modalIsOpen: false}));
-                axios.get(process.env.REACT_APP_API+"projects/" + projectState.currentUserId).then((data)=>{
+                axios.get(process.env.REACT_APP_API+"projects/" + currentUserId).then((data)=>{
                     setState((prev)=>({...prev, projects:[...data.data]}));
                 })
             })
