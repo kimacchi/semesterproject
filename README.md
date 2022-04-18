@@ -25,7 +25,8 @@ Progress:
 
 Known problems:
 <br></br>
-
+ Major:
+  * There are unreasonable amounts of requests to the backend when someone signs in. Resulting in the backend server crashing and reseting the database.
   <br></br>
  Minor:
   * There are some performance issues with the whole app.  
